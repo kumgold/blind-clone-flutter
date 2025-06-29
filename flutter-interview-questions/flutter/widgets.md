@@ -46,4 +46,7 @@ class _CounterWidgetState extends State<CounterWidget> {
 }
 ```
 
-
+<hr/>
+참고 자료 : 
+https://docs.flutter.dev/get-started/fundamentals/state-management <br/>
+https://docs.flutter.dev/get-started/fundamentals/widgets
