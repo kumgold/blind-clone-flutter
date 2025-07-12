@@ -120,3 +120,5 @@ app.*.symbols
 .idea/vcs.xml
 .idea/modules.xml
 .idea/flutter-study.iml
+blind-clone/android/google-services.json
+blind-clone/ios/Runner/GoogleService-Info.plist
