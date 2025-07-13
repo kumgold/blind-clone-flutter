@@ -124,3 +124,6 @@ blind-clone/android/google-services.json
 blind-clone/ios/Runner/GoogleService-Info.plist
 blind-clone/ios/.DS_Store
 blind-clone/android/app/google-services.json
+.DS_Store
+blind-clone/lib/firebase_options.dart
+blind-clone/firebase.json
