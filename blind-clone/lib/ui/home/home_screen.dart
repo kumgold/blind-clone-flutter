@@ -1,5 +1,4 @@
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
-import 'package:blind_clone_flutter/ui/home/home_event.dart';
 import 'package:blind_clone_flutter/ui/home/home_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,13 +19,29 @@ class HomeScreen extends StatelessWidget {
             if (state is HomeLoading) {
               return Text('home loading');
             }
+
+            if (state is HomeResult) {
+              if (state.posts.isEmpty) {
+                return const Center(child: Text('게시물이 없습니다.'));
+              }
+              return ListView.builder(
+                itemCount: state.posts.length,
+                itemBuilder: (context, index) {
+                  final post = state.posts[index];
+                  return ListTile(
+                    title: Text(post.title),
+                    subtitle: Text(post.content),
+                  );
+                },
+              );
+            }
             return Text('error state');
           },
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.read<HomeBloc>().add(FetchDataEvent());
+          context.read<HomeBloc>().add(FetchPosts());
         },
         child: const Icon(Icons.refresh),
       ),

@@ -1,3 +1,4 @@
+import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,7 +43,10 @@ class _MainPageState extends State<MainPage> {
   // 각 탭에 해당하는 페이지 위젯들을 리스트로 정의
   static final List<Widget> _widgetOptions = <Widget>[
     // 각 탭을 눌렀을 때 보여줄 페이지 위젯들
-    BlocProvider(create: (context) => HomeBloc(), child: const HomeScreen()),
+    BlocProvider(
+      create: (context) => HomeBloc(postRepository: PostRepository()),
+      child: const HomeScreen(),
+    ),
     PlaceholderPage(pageTitle: '검색'),
     PlaceholderPage(pageTitle: '추가'),
     PlaceholderPage(pageTitle: '알림'),

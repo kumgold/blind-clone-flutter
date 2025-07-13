@@ -1,3 +1,4 @@
+import 'package:blind_clone_flutter/data/post.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class HomeState extends Equatable {
@@ -12,12 +13,12 @@ class HomeInitial extends HomeState {}
 class HomeLoading extends HomeState {}
 
 class HomeResult extends HomeState {
-  final String message;
+  final List<Post> posts;
 
-  const HomeResult({required this.message});
+  const HomeResult({required this.posts});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [posts];
 }
 
 class HomeError extends HomeState {
