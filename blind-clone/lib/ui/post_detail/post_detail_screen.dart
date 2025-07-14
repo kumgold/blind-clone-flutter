@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:blind_clone_flutter/data/post.dart'; // Post 모델 경로에 맞게 수정해주세요.
+import 'package:blind_clone_flutter/data/post.dart';
 
 class PostDetailScreen extends StatelessWidget {
   final Post post;
