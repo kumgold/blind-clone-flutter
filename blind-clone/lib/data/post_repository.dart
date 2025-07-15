@@ -9,7 +9,7 @@ class PostRepository {
     return _postsRef.onValue.map((event) {
       final data = event.snapshot.value as Map<dynamic, dynamic>?;
       if (data == null) {
-        return []; // 데이터가 없으면 빈 리스트 반환
+        return [];
       }
 
       final posts = data.entries.map((entry) {
@@ -20,5 +20,20 @@ class PostRepository {
 
       return posts;
     });
+  }
+
+  Future<Post> getPost(String postId) async {
+    try {
+      final snapshot = await _postsRef.child(postId).get();
+
+      if (snapshot.exists) {
+        final data = Map<String, dynamic>.from(snapshot.value as Map);
+        return Post.fromJson(postId, data);
+      } else {
+        throw Exception('Post not found');
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }
