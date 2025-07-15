@@ -33,13 +33,11 @@ class HomeScreen extends StatelessWidget {
                     title: Text(post.title),
                     subtitle: Text(post.content),
                     onTap: () {
-                      // Navigator.push를 사용하여 새 화면으로 이동합니다.
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          // 이동할 화면의 인스턴스를 생성합니다.
-                          // PostDetailScreen에 선택된 post 객체를 전달합니다.
-                          builder: (context) => PostDetailScreen(post: post),
+                          builder: (context) =>
+                              PostDetailScreen(postId: post.id),
                         ),
                       );
                     },

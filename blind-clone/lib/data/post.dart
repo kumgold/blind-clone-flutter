@@ -7,7 +7,6 @@ class Post extends Equatable {
 
   const Post({required this.id, required this.title, required this.content});
 
-  // JSON(Map)에서 Post 객체로 변환하는 factory 생성자
   factory Post.fromJson(String id, Map<String, dynamic> json) {
     return Post(
       id: id,
