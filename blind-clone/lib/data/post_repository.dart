@@ -26,8 +26,6 @@ class PostRepository {
     try {
       final snapshot = await _postsRef.orderByChild('id').equalTo(postId).get();
 
-      debugPrint('Snapshot value: ${snapshot.value}');
-
       if (snapshot.exists) {
         final data = Map<String, dynamic>.from(snapshot.value as Map);
         final postJson = Map<String, dynamic>.from(data.values.first);
