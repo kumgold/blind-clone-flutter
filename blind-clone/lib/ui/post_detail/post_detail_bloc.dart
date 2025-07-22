@@ -1,6 +1,7 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/post_detail/post_detail_state.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class PostDetailEvent extends Equatable {
@@ -36,6 +37,7 @@ class PostDetailBloc extends Bloc<PostDetailEvent, PostDetailState> {
 
     try {
       final post = await _postRepository.getPost(event.postId);
+
       emit(PostDetailLoaded(post));
     } catch (e) {
       emit(PostDetailError(e.toString()));

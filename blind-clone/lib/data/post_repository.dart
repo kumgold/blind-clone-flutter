@@ -1,10 +1,10 @@
 import 'package:blind_clone_flutter/data/post.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 
 class PostRepository {
   final DatabaseReference _postsRef = FirebaseDatabase.instance.ref('posts');
 
-  // 'posts' 경로의 데이터를 실시간 Stream으로 반환
   Stream<List<Post>> getPostsStream() {
     return _postsRef.onValue.map((event) {
       final data = event.snapshot.value as Map<dynamic, dynamic>?;
@@ -24,11 +24,15 @@ class PostRepository {
 
   Future<Post> getPost(String postId) async {
     try {
-      final snapshot = await _postsRef.child(postId).get();
+      final snapshot = await _postsRef.orderByChild('id').equalTo(postId).get();
+
+      debugPrint('Snapshot value: ${snapshot.value}');
 
       if (snapshot.exists) {
         final data = Map<String, dynamic>.from(snapshot.value as Map);
-        return Post.fromJson(postId, data);
+        final postJson = Map<String, dynamic>.from(data.values.first);
+
+        return Post.fromJson(postId, postJson);
       } else {
         throw Exception('Post not found');
       }
