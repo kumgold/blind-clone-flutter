@@ -1,7 +1,8 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
-import 'package:blind_clone_flutter/firebase_options.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_screen.dart';
+import 'package:blind_clone_flutter/ui/search/search_bloc.dart';
+import 'package:blind_clone_flutter/ui/search/search_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp();
 
   runApp(const MyApp());
 }
@@ -47,6 +48,10 @@ class _MainPageState extends State<MainPage> {
     BlocProvider(
       create: (context) => HomeBloc(postRepository: PostRepository()),
       child: const HomeScreen(),
+    ),
+    BlocProvider(
+      create: (context) => SearchBloc(postRepository: PostRepository()),
+      child: const SearchScreen(),
     ),
     PlaceholderPage(pageTitle: '검색'),
     PlaceholderPage(pageTitle: '추가'),

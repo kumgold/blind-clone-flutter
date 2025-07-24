@@ -15,7 +15,14 @@ class DrawerScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(
+        title: Text(title),
+        actions: [
+          IconButton(onPressed: () => {}, icon: Icon(Icons.search)),
+          IconButton(onPressed: () => {}, icon: Icon(Icons.chat_rounded)),
+          IconButton(onPressed: () => {}, icon: Icon(Icons.person)),
+        ],
+      ),
       drawer: Drawer(
         child: ListView(
           children: [
