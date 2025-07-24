@@ -4,11 +4,13 @@ class DrawerScaffold extends StatelessWidget {
   final Widget body;
   final String title;
   final Widget? floatingActionButton;
+  final Widget? bottomNavigationBar;
 
   const DrawerScaffold({
     required this.body,
     required this.title,
     this.floatingActionButton,
+    this.bottomNavigationBar,
     super.key,
   });
 
@@ -24,6 +26,7 @@ class DrawerScaffold extends StatelessWidget {
         ],
       ),
       drawer: Drawer(
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         child: ListView(
           children: [
             const DrawerHeader(
@@ -59,6 +62,7 @@ class DrawerScaffold extends StatelessWidget {
       ),
       body: body,
       floatingActionButton: floatingActionButton,
+      bottomNavigationBar: bottomNavigationBar,
     );
   }
 }

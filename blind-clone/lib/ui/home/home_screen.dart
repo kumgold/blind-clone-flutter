@@ -1,4 +1,3 @@
-import 'package:blind_clone_flutter/share/drawer_scaffold.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_state.dart';
 import 'package:blind_clone_flutter/ui/post_detail/post_detail_screen.dart';
@@ -10,51 +9,41 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DrawerScaffold(
-      title: 'Home',
-      body: Center(
-        child: BlocBuilder<HomeBloc, HomeState>(
-          builder: (context, state) {
-            if (state is HomeInitial) {
-              return Text('home initial');
-            }
-            if (state is HomeLoading) {
-              return Text('home loading');
-            }
+    return Center(
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state is HomeInitial) {
+            return Text('home initial');
+          }
+          if (state is HomeLoading) {
+            return Text('home loading');
+          }
 
-            if (state is HomeResult) {
-              if (state.posts.isEmpty) {
-                return const Center(child: Text('게시물이 없습니다.'));
-              }
-              return ListView.builder(
-                itemCount: state.posts.length,
-                itemBuilder: (context, index) {
-                  final post = state.posts[index];
-                  return ListTile(
-                    title: Text(post.title),
-                    subtitle: Text(post.content),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              PostDetailScreen(postId: post.id),
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
+          if (state is HomeResult) {
+            if (state.posts.isEmpty) {
+              return const Center(child: Text('게시물이 없습니다.'));
             }
-            return Text('error state');
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.read<HomeBloc>().add(FetchPosts());
+            return ListView.builder(
+              itemCount: state.posts.length,
+              itemBuilder: (context, index) {
+                final post = state.posts[index];
+                return ListTile(
+                  title: Text(post.title),
+                  subtitle: Text(post.content),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PostDetailScreen(postId: post.id),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          }
+          return Text('error state');
         },
-        child: const Icon(Icons.refresh),
       ),
     );
   }

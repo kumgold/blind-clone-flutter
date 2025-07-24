@@ -1,4 +1,5 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
+import 'package:blind_clone_flutter/share/drawer_scaffold.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_screen.dart';
 import 'package:blind_clone_flutter/ui/search/search_bloc.dart';
@@ -42,6 +43,8 @@ class _MainPageState extends State<MainPage> {
   // 현재 선택된 탭의 인덱스를 저장할 변수
   int _selectedIndex = 0;
 
+  static final List<String> _titleList = ["홈", "검색", "추가", "알림", "설정"];
+
   // 각 탭에 해당하는 페이지 위젯들을 리스트로 정의
   static final List<Widget> _widgetOptions = <Widget>[
     // 각 탭을 눌렀을 때 보여줄 페이지 위젯들
@@ -69,10 +72,10 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DrawerScaffold(
+      title: _titleList[_selectedIndex],
       // _selectedIndex에 따라 _widgetOptions 리스트에서 적절한 페이지를 선택하여 표시
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
