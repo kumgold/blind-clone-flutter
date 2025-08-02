@@ -26,7 +26,7 @@ class PostRepository {
 
   Future<Post> getPost(String postId) async {
     try {
-      final snapshot = await _postsRef.orderByChild('id').equalTo(postId).get();
+      final snapshot = await _postsRef.child(postId).get();
 
       if (snapshot.exists) {
         final data = Map<String, dynamic>.from(snapshot.value as Map);
