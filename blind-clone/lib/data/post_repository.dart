@@ -1,25 +1,27 @@
 import 'package:blind_clone_flutter/data/post.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
 
 class PostRepository {
   final DatabaseReference _postsRef = FirebaseDatabase.instance.ref('posts');
 
-  Stream<List<Post>> getPostsStream() {
-    return _postsRef.onValue.map((event) {
-      final data = event.snapshot.value as Map<dynamic, dynamic>?;
+  Future<List<Post>> getPosts() async {
+    try {
+      final snapshot = await _postsRef.get();
+
+      final data = snapshot.value as Map<dynamic, dynamic>?;
+
       if (data == null) {
         return [];
       }
 
       final posts = data.entries.map((entry) {
-        // entry.key는 Firebase에서 생성된 고유 키
-        // entry.value는 title, content를 담고 있는 Map
         return Post.fromJson(entry.key, Map<String, dynamic>.from(entry.value));
       }).toList();
 
       return posts;
-    });
+    } catch (e) {
+      throw Exception('Failed to load posts: $e');
+    }
   }
 
   Future<Post> getPost(String postId) async {
@@ -36,6 +38,17 @@ class PostRepository {
       }
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<void> addPost(Post post) async {
+    try {
+      await _postsRef.child(post.id).set({
+        'title': post.title,
+        'content': post.content,
+      });
+    } catch (e) {
+      throw Exception('Failed to add post: $e');
     }
   }
 }

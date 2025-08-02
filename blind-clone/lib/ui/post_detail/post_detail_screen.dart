@@ -27,14 +27,7 @@ class PostDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: BlocBuilder<PostDetailBloc, PostDetailState>(
-          builder: (context, state) {
-            if (state is PostDetailLoaded) {
-              return Text(state.post.title);
-            }
-            return const Text('게시물 상세');
-          },
-        ),
+        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
       ),
       body: BlocBuilder<PostDetailBloc, PostDetailState>(
         builder: (context, state) {

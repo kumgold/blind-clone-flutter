@@ -1,5 +1,8 @@
+import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_state.dart';
+import 'package:blind_clone_flutter/ui/post_add/post_add_bloc.dart';
+import 'package:blind_clone_flutter/ui/post_add/post_add_screen.dart';
 import 'package:blind_clone_flutter/ui/post_detail/post_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -70,7 +73,17 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => BlocProvider(
+                create: (_) => PostAddBloc(postRepository: PostRepository()),
+                child: const PostAddScreen(),
+              ),
+            ),
+          );
+        },
         child: const Icon(Icons.post_add_rounded),
       ),
     );
