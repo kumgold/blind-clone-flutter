@@ -16,6 +16,17 @@ class DrawerScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final channels = [
+      'IT 엔지니어',
+      '주식, 투자',
+      '자동차',
+      '부동산',
+      '이직, 커리어',
+      '썸, 연애',
+      '블라블라',
+      '스토리',
+    ];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
@@ -27,37 +38,47 @@ class DrawerScaffold extends StatelessWidget {
       ),
       drawer: Drawer(
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        child: ListView(
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                '메뉴',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
+        child: SafeArea(
+          child: Padding(
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('내 채널'),
+                SizedBox(height: 16),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: channels.length,
+                    itemBuilder: (context, index) {
+                      final channel = channels[index];
+                      return InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Padding(
+                          padding: EdgeInsetsGeometry.symmetric(vertical: 4),
+                          child: Row(
+                            children: [
+                              CircleAvatar(
+                                radius: 16,
+                                backgroundColor: Colors.grey.shade300,
+                                child: Icon(
+                                  Icons.ac_unit_outlined,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Text(channel),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-            ListTile(
-              leading: const Icon(Icons.message),
-              title: const Text('Messages'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.account_circle),
-              title: const Text('Profile'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
+          ),
         ),
       ),
       body: body,
