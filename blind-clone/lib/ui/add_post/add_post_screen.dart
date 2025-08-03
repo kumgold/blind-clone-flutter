@@ -1,17 +1,17 @@
 import 'package:blind_clone_flutter/data/post.dart';
-import 'package:blind_clone_flutter/ui/post_add/post_add_bloc.dart';
-import 'package:blind_clone_flutter/ui/post_add/post_add_state.dart';
+import 'package:blind_clone_flutter/ui/add_post/add_post_bloc.dart';
+import 'package:blind_clone_flutter/ui/add_post/add_post_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PostAddScreen extends StatefulWidget {
-  const PostAddScreen({super.key});
+class AddPostScreen extends StatefulWidget {
+  const AddPostScreen({super.key});
 
   @override
-  State<PostAddScreen> createState() => _PostAddScreenState();
+  State<AddPostScreen> createState() => _AddPostScreenState();
 }
 
-class _PostAddScreenState extends State<PostAddScreen> {
+class _AddPostScreenState extends State<AddPostScreen> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
 
@@ -25,7 +25,7 @@ class _PostAddScreenState extends State<PostAddScreen> {
         content: _contentController.text.trim(),
       );
 
-      context.read<PostAddBloc>().add(UpdatePost(post));
+      context.read<AddPostBloc>().add(UpdatePost(post));
     }
   }
 
@@ -33,18 +33,18 @@ class _PostAddScreenState extends State<PostAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('게시글 작성')),
-      body: BlocConsumer<PostAddBloc, PostAddState>(
+      body: BlocConsumer<AddPostBloc, AddPostState>(
         listener: (context, state) {
-          if (state is PostAddSuccess) {
+          if (state is AddPostSuccess) {
             Navigator.pop(context); // 저장 성공 후 이전 화면으로 이동
-          } else if (state is PostAddError) {
+          } else if (state is AddPostError) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text('오류: ${state.message}')));
           }
         },
         builder: (context, state) {
-          final isLoading = state is PostAddLoading;
+          final isLoading = state is AddPostLoading;
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
