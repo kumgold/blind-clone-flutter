@@ -21,6 +21,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       final post = Post(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
+        channelId: '',
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),
       );

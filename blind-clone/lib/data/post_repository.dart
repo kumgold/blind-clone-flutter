@@ -30,9 +30,8 @@ class PostRepository {
 
       if (snapshot.exists) {
         final data = Map<String, dynamic>.from(snapshot.value as Map);
-        final postJson = Map<String, dynamic>.from(data.values.first);
 
-        return Post.fromJson(postId, postJson);
+        return Post.fromJson(postId, data);
       } else {
         throw Exception('Post not found');
       }
