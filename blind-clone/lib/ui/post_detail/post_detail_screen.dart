@@ -42,13 +42,14 @@ class PostDetailView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(state.post.channelName),
                   Text(
                     state.post.title,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 8),
                   const Divider(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
                   Text(
                     state.post.content,
                     style: Theme.of(context).textTheme.bodyLarge,

@@ -1,3 +1,4 @@
+import 'package:blind_clone_flutter/data/channel.dart';
 import 'package:flutter/material.dart';
 
 class DrawerScaffold extends StatelessWidget {
@@ -16,16 +17,7 @@ class DrawerScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final channels = [
-      'IT 엔지니어',
-      '주식, 투자',
-      '자동차',
-      '부동산',
-      '이직, 커리어',
-      '썸, 연애',
-      '블라블라',
-      '스토리',
-    ];
+    final channels = Channel.channels;
 
     return Scaffold(
       appBar: AppBar(

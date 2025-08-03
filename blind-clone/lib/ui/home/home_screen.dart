@@ -52,7 +52,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (context, index) {
                     final post = state.posts[index];
                     return ListTile(
-                      title: Text(post.title),
+                      title: Row(
+                        children: [
+                          Text(
+                            post.title,
+                            style: TextStyle(fontSize: 14, color: Colors.black),
+                          ),
+                          Text(
+                            post.channelName,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.blueGrey,
+                            ),
+                          ),
+                        ],
+                      ),
                       subtitle: Text(post.content),
                       onTap: () {
                         Navigator.push(

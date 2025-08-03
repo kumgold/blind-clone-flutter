@@ -1,3 +1,4 @@
+import 'package:blind_clone_flutter/data/channel.dart';
 import 'package:blind_clone_flutter/data/post.dart';
 import 'package:blind_clone_flutter/ui/add_post/add_post_bloc.dart';
 import 'package:blind_clone_flutter/ui/add_post/add_post_state.dart';
@@ -14,14 +15,15 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
+
+  String? _selectedChannel;
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
       final post = Post(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        channelId: '',
+        channelName: _selectedChannel!,
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),
       );
@@ -32,6 +34,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final channels = Channel.channels;
+
     return Scaffold(
       appBar: AppBar(title: const Text('게시글 작성')),
       body: BlocConsumer<AddPostBloc, AddPostState>(
@@ -56,24 +60,47 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   TextFormField(
                     controller: _titleController,
                     decoration: const InputDecoration(
-                      labelText: '제목',
+                      labelText: '제목을 입력하세요',
                       border: OutlineInputBorder(),
                     ),
                     validator: (value) => value == null || value.trim().isEmpty
                         ? '제목을 입력하세요'
                         : null,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 8),
+                  DropdownButtonFormField<String>(
+                    decoration: const InputDecoration(
+                      labelText: '채널을 선택하세요',
+                      border: OutlineInputBorder(),
+                    ),
+                    value: _selectedChannel,
+                    items: channels
+                        .map(
+                          (channel) => DropdownMenuItem(
+                            value: channel,
+                            child: Text(channel),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedChannel = value;
+                      });
+                    },
+                    validator: (value) => value == null ? '채널을 선택해주세요' : null,
+                  ),
+                  const SizedBox(height: 8),
                   Expanded(
                     child: TextFormField(
                       controller: _contentController,
                       decoration: const InputDecoration(
-                        labelText: '내용',
+                        hintText: '내용을 입력하세요',
                         border: OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       expands: true,
+                      textAlignVertical: TextAlignVertical.top,
                       validator: (value) =>
                           value == null || value.trim().isEmpty
                           ? '내용을 입력하세요'
@@ -84,6 +111,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
                       onPressed: isLoading ? null : _submit,
                       child: isLoading
                           ? const CircularProgressIndicator()

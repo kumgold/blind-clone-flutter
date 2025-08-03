@@ -42,10 +42,7 @@ class PostRepository {
 
   Future<void> addPost(Post post) async {
     try {
-      await _postsRef.child(post.id).set({
-        'title': post.title,
-        'content': post.content,
-      });
+      await _postsRef.child(post.id).set(post.toJson());
     } catch (e) {
       throw Exception('Failed to add post: $e');
     }
