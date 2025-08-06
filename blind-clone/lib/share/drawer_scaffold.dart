@@ -1,4 +1,5 @@
 import 'package:blind_clone_flutter/data/channel.dart';
+import 'package:blind_clone_flutter/ui/channel_post/channel_post_screen.dart';
 import 'package:flutter/material.dart';
 
 class DrawerScaffold extends StatelessWidget {
@@ -46,6 +47,13 @@ class DrawerScaffold extends StatelessWidget {
                       return InkWell(
                         onTap: () {
                           Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ChannelPostScreen(channelName: channel),
+                            ),
+                          );
                         },
                         child: Padding(
                           padding: EdgeInsetsGeometry.symmetric(vertical: 4),

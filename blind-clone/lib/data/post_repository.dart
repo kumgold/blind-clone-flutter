@@ -6,14 +6,7 @@ class PostRepository {
 
   Future<List<Post>> getPosts({String? channelName}) async {
     try {
-      Query query = _postsRef;
-
-      if (channelName != null && channelName.isNotEmpty) {
-        query = query.equalTo(channelName);
-      }
-
-      final snapshot = await query.get();
-
+      final snapshot = await _postsRef.get();
       final data = snapshot.value as Map<dynamic, dynamic>?;
 
       if (data == null) {
@@ -23,6 +16,14 @@ class PostRepository {
       final posts = data.entries.map((entry) {
         return Post.fromJson(entry.key, Map<String, dynamic>.from(entry.value));
       }).toList();
+
+      if (channelName != null && channelName.isNotEmpty) {
+        final filteredPosts = posts.where((post) {
+          return post.channelName == channelName;
+        }).toList();
+
+        return filteredPosts;
+      }
 
       return posts;
     } catch (e) {
