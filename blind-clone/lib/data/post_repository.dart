@@ -4,9 +4,15 @@ import 'package:firebase_database/firebase_database.dart';
 class PostRepository {
   final DatabaseReference _postsRef = FirebaseDatabase.instance.ref('posts');
 
-  Future<List<Post>> getPosts() async {
+  Future<List<Post>> getPosts({String? channelName}) async {
     try {
-      final snapshot = await _postsRef.get();
+      Query query = _postsRef;
+
+      if (channelName != null && channelName.isNotEmpty) {
+        query = query.equalTo(channelName);
+      }
+
+      final snapshot = await query.get();
 
       final data = snapshot.value as Map<dynamic, dynamic>?;
 
