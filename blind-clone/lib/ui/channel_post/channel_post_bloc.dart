@@ -1,7 +1,6 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/channel_post/channel_post_state.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class ChannelPostEvent extends Equatable {
@@ -30,6 +29,8 @@ class ChannelPostBloc extends Bloc<ChannelPostEvent, ChannelPostState> {
   }
 
   void _onFetchPosts(FetchPosts event, Emitter<ChannelPostState> emit) async {
+    emit(ChannelPostLoading());
+
     try {
       final channelName = event.channelName;
 

@@ -1,6 +1,7 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/post_detail/post_detail_bloc.dart';
 import 'package:blind_clone_flutter/ui/post_detail/post_detail_state.dart';
+import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -33,7 +34,7 @@ class PostDetailView extends StatelessWidget {
         builder: (context, state) {
           // 로딩 상태일 때
           if (state is PostDetailLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: defaultProgressIndicator());
           }
           // 데이터 로드 완료 상태일 때
           else if (state is PostDetailLoaded) {

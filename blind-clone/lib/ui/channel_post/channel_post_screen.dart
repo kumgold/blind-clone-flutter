@@ -2,6 +2,7 @@ import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/channel_post/channel_post_bloc.dart';
 import 'package:blind_clone_flutter/ui/channel_post/channel_post_state.dart';
 import 'package:blind_clone_flutter/ui/post_detail/post_detail_screen.dart';
+import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,6 +28,7 @@ class _ChannelPostScreenState extends State<ChannelPostScreen> {
           ChannelPostBloc(postRepository: PostRepository())
             ..add(FetchPosts(widget.channelName)),
       child: Scaffold(
+        appBar: AppBar(title: Text(widget.channelName)),
         body: Center(
           child: BlocBuilder<ChannelPostBloc, ChannelPostState>(
             builder: (context, state) {
@@ -35,7 +37,7 @@ class _ChannelPostScreenState extends State<ChannelPostScreen> {
               }
 
               if (state is ChannelPostLoading) {
-                return Center(child: CircularProgressIndicator());
+                return Center(child: defaultProgressIndicator());
               }
 
               if (state is ChannelPostResult) {
