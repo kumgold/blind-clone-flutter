@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-class Post extends Equatable {
+class Post {
   final String id;
   final String channelName;
   final String title;
@@ -31,6 +29,5 @@ class Post extends Equatable {
     };
   }
 
-  @override
   List<Object?> get props => [id, channelName, title, content];
 }

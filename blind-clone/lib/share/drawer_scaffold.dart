@@ -1,5 +1,5 @@
-import 'package:blind_clone_flutter/data/channel.dart';
-import 'package:blind_clone_flutter/ui/post/channel_post/channel_post_screen.dart';
+import 'package:blind_clone_flutter/share/channel.dart';
+import 'package:blind_clone_flutter/ui/post/post_channel/post_channel_screen.dart';
 import 'package:flutter/material.dart';
 
 class DrawerScaffold extends StatelessWidget {
@@ -51,7 +51,7 @@ class DrawerScaffold extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  ChannelPostScreen(channelName: channel),
+                                  PostChannelScreen(channelName: channel),
                             ),
                           );
                         },

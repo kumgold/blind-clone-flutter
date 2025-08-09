@@ -1,16 +1,16 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
-import 'package:blind_clone_flutter/ui/post/channel_post/channel_post_state.dart';
+import 'package:blind_clone_flutter/ui/post/post_channel/post_channel_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class ChannelPostEvent extends Equatable {
-  const ChannelPostEvent();
+abstract class PostChannelEvent extends Equatable {
+  const PostChannelEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class FetchPosts extends ChannelPostEvent {
+class FetchPosts extends PostChannelEvent {
   final String channelName;
 
   const FetchPosts(this.channelName);
@@ -19,26 +19,26 @@ class FetchPosts extends ChannelPostEvent {
   List<Object> get props => [channelName];
 }
 
-class ChannelPostBloc extends Bloc<ChannelPostEvent, ChannelPostState> {
+class PostChannelBloc extends Bloc<PostChannelEvent, PostChannelState> {
   final PostRepository _postRepository;
 
-  ChannelPostBloc({required PostRepository postRepository})
+  PostChannelBloc({required PostRepository postRepository})
     : _postRepository = postRepository,
-      super(ChannelPostInitial()) {
+      super(PostChannelInitial()) {
     on<FetchPosts>(_onFetchPosts);
   }
 
-  void _onFetchPosts(FetchPosts event, Emitter<ChannelPostState> emit) async {
-    emit(ChannelPostLoading());
+  void _onFetchPosts(FetchPosts event, Emitter<PostChannelState> emit) async {
+    emit(PostChannelLoading());
 
     try {
       final channelName = event.channelName;
 
       final result = await _postRepository.getPosts(channelName: channelName);
 
-      emit(ChannelPostResult(posts: result));
+      emit(PostChannelResult(posts: result));
     } catch (e) {
-      emit(ChannelPostError(errorMessage: e.toString()));
+      emit(PostChannelError(errorMessage: e.toString()));
     }
   }
 

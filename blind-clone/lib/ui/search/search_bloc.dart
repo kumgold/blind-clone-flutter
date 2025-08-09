@@ -11,9 +11,5 @@ abstract class SearchEvent extends Equatable {
 }
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
-  final PostRepository _postRepository;
-
-  SearchBloc({required PostRepository postRepository})
-    : _postRepository = postRepository,
-      super(SearchLoading());
+  SearchBloc({required PostRepository postRepository}) : super(SearchInitial());
 }

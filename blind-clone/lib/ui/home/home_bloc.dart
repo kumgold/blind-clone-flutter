@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/home/home_state.dart';
 import 'package:equatable/equatable.dart';
@@ -20,7 +18,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc({required PostRepository postRepository})
     : _postRepository = postRepository,
       super(HomeLoading()) {
-    // 초기 상태는 로딩
     on<FetchPosts>(_onFetchPosts);
   }
 
@@ -31,10 +28,5 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     } catch (e) {
       emit(HomeResult(posts: []));
     }
-  }
-
-  @override
-  Future<void> close() {
-    return super.close();
   }
 }
