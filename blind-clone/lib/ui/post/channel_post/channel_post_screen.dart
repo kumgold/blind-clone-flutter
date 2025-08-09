@@ -1,7 +1,7 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
-import 'package:blind_clone_flutter/ui/channel_post/channel_post_bloc.dart';
-import 'package:blind_clone_flutter/ui/channel_post/channel_post_state.dart';
-import 'package:blind_clone_flutter/ui/post_detail/post_detail_screen.dart';
+import 'package:blind_clone_flutter/ui/post/channel_post/channel_post_bloc.dart';
+import 'package:blind_clone_flutter/ui/post/channel_post/channel_post_state.dart';
+import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_screen.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

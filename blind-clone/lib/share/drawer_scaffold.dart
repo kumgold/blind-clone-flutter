@@ -1,5 +1,5 @@
 import 'package:blind_clone_flutter/data/channel.dart';
-import 'package:blind_clone_flutter/ui/channel_post/channel_post_screen.dart';
+import 'package:blind_clone_flutter/ui/post/channel_post/channel_post_screen.dart';
 import 'package:flutter/material.dart';
 
 class DrawerScaffold extends StatelessWidget {
