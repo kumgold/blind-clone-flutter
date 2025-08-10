@@ -1,9 +1,10 @@
-import 'package:blind_clone_flutter/data/post/post_repository.dart';
+import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_state.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_bloc.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_screen.dart';
 import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_screen.dart';
+import 'package:blind_clone_flutter/ui/story/add_story/add_story_bloc.dart';
 import 'package:blind_clone_flutter/ui/story/add_story/add_story_screen.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.pop(ctx);
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (_) => const AddStoryScreen()),
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider(
+                        create: (_) =>
+                            AddStoryBloc(postRepository: PostRepository()),
+                        child: const AddStoryScreen(),
+                      ),
+                    ),
                   );
                 },
               ),

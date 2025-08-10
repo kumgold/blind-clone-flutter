@@ -1,4 +1,4 @@
-import 'package:blind_clone_flutter/data/post/post.dart';
+import 'package:blind_clone_flutter/data/post.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class HomeState extends Equatable {
