@@ -1,4 +1,4 @@
-import 'package:blind_clone_flutter/data/post_repository.dart';
+import 'package:blind_clone_flutter/data/post/post_repository.dart';
 import 'package:blind_clone_flutter/share/drawer_scaffold.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_screen.dart';

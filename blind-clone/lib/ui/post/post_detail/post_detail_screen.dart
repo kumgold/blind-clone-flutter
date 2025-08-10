@@ -1,4 +1,4 @@
-import 'package:blind_clone_flutter/data/post_repository.dart';
+import 'package:blind_clone_flutter/data/post/post_repository.dart';
 import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_bloc.dart';
 import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_state.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';

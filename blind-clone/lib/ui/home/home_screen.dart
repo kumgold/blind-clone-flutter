@@ -1,4 +1,4 @@
-import 'package:blind_clone_flutter/data/post_repository.dart';
+import 'package:blind_clone_flutter/data/post/post_repository.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_state.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_bloc.dart';

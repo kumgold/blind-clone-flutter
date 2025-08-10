@@ -1,4 +1,4 @@
-import 'package:blind_clone_flutter/data/post.dart';
+import 'package:blind_clone_flutter/data/post/post.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class PostRepository {

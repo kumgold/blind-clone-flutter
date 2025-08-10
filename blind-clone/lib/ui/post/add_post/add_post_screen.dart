@@ -1,5 +1,5 @@
 import 'package:blind_clone_flutter/share/channel.dart';
-import 'package:blind_clone_flutter/data/post.dart';
+import 'package:blind_clone_flutter/data/post/post.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_bloc.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_state.dart';
 import 'package:flutter/material.dart';
