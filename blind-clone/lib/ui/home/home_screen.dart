@@ -4,6 +4,7 @@ import 'package:blind_clone_flutter/ui/home/home_state.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_bloc.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_screen.dart';
 import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_screen.dart';
+import 'package:blind_clone_flutter/ui/story/add_story/add_story_screen.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +27,48 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _onRefresh() async {
     // 새로고침 시 FetchPost 이벤트를 다시 호출
     context.read<HomeBloc>().add(FetchPosts());
+  }
+
+  void _showAddPostOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext ctx) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.article_outlined),
+                title: const Text('일반 게시물'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BlocProvider(
+                        create: (_) =>
+                            AddPostBloc(postRepository: PostRepository()),
+                        child: const AddPostScreen(),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.photo_camera_outlined),
+                title: const Text('사진 게시물'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AddStoryScreen()),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -89,15 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => BlocProvider(
-                create: (_) => AddPostBloc(postRepository: PostRepository()),
-                child: const AddPostScreen(),
-              ),
-            ),
-          );
+          _showAddPostOptions(context);
         },
         child: const Icon(Icons.post_add_rounded),
       ),
