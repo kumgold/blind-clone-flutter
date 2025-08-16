@@ -3,12 +3,14 @@ class Post {
   final String channelName;
   final String title;
   final String content;
+  final String? imageUrl;
 
   const Post({
     required this.id,
     required this.channelName,
     required this.title,
     required this.content,
+    this.imageUrl,
   });
 
   factory Post.fromJson(String id, Map<String, dynamic> json) {
@@ -17,6 +19,7 @@ class Post {
       channelName: json['channelName'] ?? '',
       title: json['title'] ?? '제목 없음',
       content: json['content'] ?? '내용 없음',
+      imageUrl: json['imageUrl'],
     );
   }
 
@@ -26,8 +29,9 @@ class Post {
       'channelName': channelName,
       'title': title,
       'content': content,
+      'imageUrl': imageUrl,
     };
   }
 
-  List<Object?> get props => [id, channelName, title, content];
+  List<Object?> get props => [id, channelName, title, content, imageUrl];
 }

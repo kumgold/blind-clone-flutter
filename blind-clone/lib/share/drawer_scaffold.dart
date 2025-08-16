@@ -1,5 +1,6 @@
 import 'package:blind_clone_flutter/share/channel.dart';
 import 'package:blind_clone_flutter/ui/post/post_channel/post_channel_screen.dart';
+import 'package:blind_clone_flutter/ui/story/story_screen.dart';
 import 'package:flutter/material.dart';
 
 class DrawerScaffold extends StatelessWidget {
@@ -47,13 +48,22 @@ class DrawerScaffold extends StatelessWidget {
                       return InkWell(
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  PostChannelScreen(channelName: channel),
-                            ),
-                          );
+                          if (channel != '스토리') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PostChannelScreen(channelName: channel),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => StoryScreen(),
+                              ),
+                            );
+                          }
                         },
                         child: Padding(
                           padding: EdgeInsetsGeometry.symmetric(vertical: 4),

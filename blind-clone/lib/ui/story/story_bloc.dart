@@ -10,6 +10,33 @@ abstract class StoryEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class FetchPosts extends StoryEvent {
+  const FetchPosts();
+
+  @override
+  List<Object> get props => [];
+}
+
 class StoryBloc extends Bloc<StoryEvent, StoryState> {
-  StoryBloc({required PostRepository postRepository}) : super(StoryInitial());
+  final PostRepository _postRepository;
+
+  StoryBloc({required PostRepository postRepository})
+    : _postRepository = postRepository,
+      super(StoryInitial()) {
+    on<FetchPosts>(_onFetchPosts);
+  }
+
+  void _onFetchPosts(FetchPosts event, Emitter<StoryState> emit) async {
+    emit(StoryLoading());
+
+    try {
+      final channelName = '스토리';
+
+      final result = await _postRepository.getPosts(channelName: channelName);
+
+      emit(StoryResult(posts: result));
+    } catch (e) {
+      emit(StoryError(errorMessage: e.toString()));
+    }
+  }
 }
