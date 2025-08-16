@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(
                       builder: (_) => BlocProvider(
                         create: (_) =>
-                            AddPostBloc(postRepository: PostRepository()),
+                            AddPostBloc(postRepository: context.read()),
                         child: const AddPostScreen(),
                       ),
                     ),
@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(
                       builder: (_) => BlocProvider(
                         create: (_) =>
-                            AddStoryBloc(postRepository: PostRepository()),
+                            AddStoryBloc(postRepository: context.read()),
                         child: const AddStoryScreen(),
                       ),
                     ),

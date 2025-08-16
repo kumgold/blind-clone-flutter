@@ -14,7 +14,7 @@ class PostDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          PostDetailBloc(postRepository: PostRepository())
+          PostDetailBloc(postRepository: context.read())
             ..add(GetPostDetail(postId)),
       child: const PostDetailView(),
     );

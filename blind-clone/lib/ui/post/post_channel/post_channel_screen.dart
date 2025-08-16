@@ -24,8 +24,8 @@ class _PostChannelScreenState extends State<PostChannelScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          PostChannelBloc(postRepository: PostRepository())
+      create: (_) =>
+          PostChannelBloc(postRepository: context.read())
             ..add(FetchPosts(widget.channelName)),
       child: Scaffold(
         appBar: AppBar(title: Text(widget.channelName)),

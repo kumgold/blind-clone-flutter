@@ -13,7 +13,9 @@ void main() async {
 
   await Firebase.initializeApp();
 
-  runApp(const MyApp());
+  runApp(
+    RepositoryProvider(create: (_) => PostRepository(), child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -49,11 +51,11 @@ class _MainPageState extends State<MainPage> {
   static final List<Widget> _widgetOptions = <Widget>[
     // 각 탭을 눌렀을 때 보여줄 페이지 위젯들
     BlocProvider(
-      create: (context) => HomeBloc(postRepository: PostRepository()),
+      create: (context) => HomeBloc(postRepository: context.read()),
       child: const HomeScreen(),
     ),
     BlocProvider(
-      create: (context) => SearchBloc(postRepository: PostRepository()),
+      create: (context) => SearchBloc(postRepository: context.read()),
       child: const SearchScreen(),
     ),
     PlaceholderPage(pageTitle: '검색'),

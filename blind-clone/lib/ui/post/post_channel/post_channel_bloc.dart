@@ -41,9 +41,4 @@ class PostChannelBloc extends Bloc<PostChannelEvent, PostChannelState> {
       emit(PostChannelError(errorMessage: e.toString()));
     }
   }
-
-  @override
-  Future<void> close() {
-    return super.close();
-  }
 }
