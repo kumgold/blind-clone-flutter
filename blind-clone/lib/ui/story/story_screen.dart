@@ -14,23 +14,50 @@ class StoryScreen extends StatefulWidget {
   State<StoryScreen> createState() => _StoryScreenState();
 }
 
-class _StoryScreenState extends State<StoryScreen> {
+class _StoryScreenState extends State<StoryScreen>
+    with SingleTickerProviderStateMixin {
+  late PageController _pageController;
   int _currentIndex = 0;
   Timer? _timer;
+
+  AnimationController? _animController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 5),
+    );
+  }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _pageController.dispose();
+    _animController?.dispose();
     super.dispose();
   }
 
   void _startTimer(int length) {
-    _timer?.cancel(); // 기존 타이머 취소
+    _timer?.cancel();
+    _animController?.forward(from: 0);
+
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       if (!mounted) return;
+
+      int nextIndex = (_currentIndex + 1) % length;
+      _pageController.animateToPage(
+        nextIndex,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
       setState(() {
-        _currentIndex = (_currentIndex + 1) % length; // 다음 인덱스로 이동
+        _currentIndex = nextIndex;
       });
+
+      _animController?.forward(from: 0); // progress bar 다시 시작
     });
   }
 
@@ -42,7 +69,6 @@ class _StoryScreenState extends State<StoryScreen> {
       child: BlocConsumer<StoryBloc, StoryState>(
         listener: (context, state) {
           if (state is StoryResult) {
-            // 게시글이 있을 때만 타이머 시작
             if (state.posts.isNotEmpty) {
               _startTimer(state.posts.length);
             }
@@ -50,7 +76,7 @@ class _StoryScreenState extends State<StoryScreen> {
         },
         builder: (context, state) {
           if (state is StoryLoading) {
-            return defaultProgressIndicator();
+            return Center(child: defaultProgressIndicator());
           }
 
           if (state is StoryError) {
@@ -64,58 +90,83 @@ class _StoryScreenState extends State<StoryScreen> {
               return const Center(child: Text('게시글이 없습니다.'));
             }
 
-            final post = posts[_currentIndex];
-
-            return Stack(
-              fit: StackFit.expand,
-              children: [
-                // 배경 이미지
-                if (post.imageUrl != null && File(post.imageUrl!).existsSync())
-                  Image.file(File(post.imageUrl!), fit: BoxFit.cover)
-                else
-                  Container(color: Colors.black87),
-
-                // 아래쪽 제목/내용 Overlay
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.black.withOpacity(0.6),
-                          Colors.transparent,
-                        ],
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
+            return Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.black,
+                leading: IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Colors.white),
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // ProgressBar
+                    SizedBox(
+                      height: 4,
+                      child: AnimatedBuilder(
+                        animation: _animController!,
+                        builder: (context, child) {
+                          return LinearProgressIndicator(
+                            value: _animController!.value,
+                            backgroundColor: Colors.white24,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          );
+                        },
                       ),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          post.title,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          post.content,
-                          style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  ],
                 ),
-              ],
+                toolbarHeight: 70,
+              ),
+              body: PageView.builder(
+                controller: _pageController,
+                scrollDirection: Axis.vertical,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentIndex = index;
+                  });
+                  _animController?.forward(from: 0);
+                },
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  final post = posts[index];
+                  return Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      if (post.imageUrl != null &&
+                          File(post.imageUrl!).existsSync())
+                        Image.file(File(post.imageUrl!), fit: BoxFit.cover)
+                      else
+                        Container(color: Colors.black87),
+
+                      // 하단 텍스트 영역
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            posts[_currentIndex].title,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            post.content,
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              ),
             );
           }
 
