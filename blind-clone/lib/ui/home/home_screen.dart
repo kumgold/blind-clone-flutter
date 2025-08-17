@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:blind_clone_flutter/data/post.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_state.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_bloc.dart';
@@ -7,6 +8,7 @@ import 'package:blind_clone_flutter/ui/post/add_post/add_post_screen.dart';
 import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_screen.dart';
 import 'package:blind_clone_flutter/ui/story/add_story/add_story_bloc.dart';
 import 'package:blind_clone_flutter/ui/story/add_story/add_story_screen.dart';
+import 'package:blind_clone_flutter/ui/story/story_screen.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -103,73 +105,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemCount: state.posts.length,
                   itemBuilder: (context, index) {
                     if (index == 3) {
-                      return SizedBox(
-                        height: 200,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: state.stories.length,
-                          itemBuilder: (context, hIndex) {
-                            final story = state.stories[hIndex];
-                            return Container(
-                              margin: const EdgeInsets.all(8),
-                              child: AspectRatio(
-                                aspectRatio: 9 / 16,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child:
-                                      (story.imageUrl != null &&
-                                          File(story.imageUrl!).existsSync())
-                                      ? Image.file(
-                                          File(story.imageUrl!),
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Container(
-                                          color: Colors.grey.shade300,
-                                          child: const Center(
-                                            child: Icon(
-                                              Icons.image_not_supported,
-                                              color: Colors.black45,
-                                            ),
-                                          ),
-                                        ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      );
+                      return _storyWidget(state.stories);
                     } else {
                       final post = state.posts[index];
-                      return ListTile(
-                        title: Row(
-                          children: [
-                            Text(
-                              post.title,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              post.channelName,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.blueGrey,
-                              ),
-                            ),
-                          ],
-                        ),
-                        subtitle: Text(post.content),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  PostDetailScreen(postId: post.id),
-                            ),
-                          );
-                        },
-                      );
+
+                      return _postTile(post);
                     }
                   },
                 ),
@@ -185,6 +125,94 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         child: const Icon(Icons.post_add_rounded),
       ),
+    );
+  }
+
+  Widget _storyWidget(List<Post> stories) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        InkWell(
+          child: Padding(
+            padding: EdgeInsetsGeometry.symmetric(horizontal: 8),
+            child: Text('스토리 화면으로 이동', style: TextStyle(fontSize: 20)),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StoryScreen()),
+            );
+          },
+        ),
+        SizedBox(height: 8),
+        Padding(
+          padding: EdgeInsetsGeometry.symmetric(horizontal: 8),
+          child: Text('나만의 일상생활을 공유해보세요!', style: TextStyle(fontSize: 16)),
+        ),
+        SizedBox(
+          height: 200,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: stories.length,
+            itemBuilder: (context, hIndex) {
+              final story = stories[hIndex];
+              return InkWell(
+                child: Container(
+                  margin: const EdgeInsets.all(8),
+                  child: AspectRatio(
+                    aspectRatio: 3 / 4,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child:
+                          (story.imageUrl != null &&
+                              File(story.imageUrl!).existsSync())
+                          ? Image.file(File(story.imageUrl!), fit: BoxFit.cover)
+                          : Container(
+                              color: Colors.grey.shade300,
+                              child: const Center(
+                                child: Icon(
+                                  Icons.image_not_supported,
+                                  color: Colors.black45,
+                                ),
+                              ),
+                            ),
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => StoryScreen()),
+                  );
+                },
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _postTile(Post post) {
+    return ListTile(
+      title: Row(
+        children: [
+          Text(post.title, style: TextStyle(fontSize: 14, color: Colors.black)),
+          Text(
+            post.channelName,
+            style: TextStyle(fontSize: 12, color: Colors.blueGrey),
+          ),
+        ],
+      ),
+      subtitle: Text(post.content),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PostDetailScreen(postId: post.id),
+          ),
+        );
+      },
     );
   }
 }

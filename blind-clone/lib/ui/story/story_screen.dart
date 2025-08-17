@@ -97,79 +97,77 @@ class _StoryScreenState extends State<StoryScreen>
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () => Navigator.of(context).pop(),
                 ),
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // ProgressBar
-                    SizedBox(
-                      height: 4,
-                      child: AnimatedBuilder(
-                        animation: _animController!,
-                        builder: (context, child) {
-                          return LinearProgressIndicator(
-                            value: _animController!.value,
-                            backgroundColor: Colors.white24,
-                            valueColor: const AlwaysStoppedAnimation<Color>(
-                              Colors.white,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                title: SizedBox(
+                  height: 4,
+                  width: double.infinity,
+                  child: AnimatedBuilder(
+                    animation: _animController!,
+                    builder: (context, child) {
+                      return LinearProgressIndicator(
+                        value: _animController!.value,
+                        backgroundColor: Colors.white24,
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                          Colors.white,
+                        ),
+                      );
+                    },
+                  ),
                 ),
-                toolbarHeight: 70,
               ),
-              body: PageView.builder(
-                controller: _pageController,
-                scrollDirection: Axis.vertical,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                  _animController?.forward(from: 0);
-                },
-                itemCount: posts.length,
-                itemBuilder: (context, index) {
-                  final post = posts[index];
-                  return Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      if (post.imageUrl != null &&
-                          File(post.imageUrl!).existsSync())
-                        Image.file(File(post.imageUrl!), fit: BoxFit.cover)
-                      else
-                        Container(color: Colors.black87),
+              body: SafeArea(
+                child: PageView.builder(
+                  controller: _pageController,
+                  scrollDirection: Axis.vertical,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                    _animController?.forward(from: 0);
+                  },
+                  itemCount: posts.length,
+                  itemBuilder: (context, index) {
+                    final post = posts[index];
+                    return Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        if (post.imageUrl != null &&
+                            File(post.imageUrl!).existsSync())
+                          Image.file(File(post.imageUrl!), fit: BoxFit.cover)
+                        else
+                          Container(color: Colors.black87),
 
-                      // 하단 텍스트 영역
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            posts[_currentIndex].title,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                            ),
+                        // 하단 텍스트 영역
+                        Padding(
+                          padding: EdgeInsetsGeometry.all(16),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                posts[_currentIndex].title,
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                post.content,
+                                style: const TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            post.content,
-                            style: const TextStyle(
-                              color: Colors.white70,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
+                        ),
+                      ],
+                    );
+                  },
+                ),
               ),
             );
           }
-
           return const SizedBox.shrink();
         },
       ),
