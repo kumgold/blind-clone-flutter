@@ -157,32 +157,46 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (context, hIndex) {
               final story = stories[hIndex];
               return InkWell(
-                child: Container(
-                  margin: const EdgeInsets.all(8),
-                  child: AspectRatio(
-                    aspectRatio: 3 / 4,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child:
-                          (story.imageUrl != null &&
-                              File(story.imageUrl!).existsSync())
-                          ? Image.file(File(story.imageUrl!), fit: BoxFit.cover)
-                          : Container(
-                              color: Colors.grey.shade300,
-                              child: const Center(
-                                child: Icon(
-                                  Icons.image_not_supported,
-                                  color: Colors.black45,
+                borderRadius: BorderRadius.circular(12),
+                child: Padding(
+                  padding: EdgeInsetsGeometry.all(8),
+                  child: Stack(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 3 / 4,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child:
+                              (story.imageUrl != null &&
+                                  File(story.imageUrl!).existsSync())
+                              ? Image.file(
+                                  File(story.imageUrl!),
+                                  fit: BoxFit.cover,
+                                )
+                              : Container(
+                                  color: Colors.grey.shade300,
+                                  child: const Center(
+                                    child: Icon(
+                                      Icons.image_not_supported,
+                                      color: Colors.black45,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                    ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsGeometry.all(8),
+                        child: Text(story.title),
+                      ),
+                    ],
                   ),
                 ),
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => StoryScreen()),
+                    MaterialPageRoute(
+                      builder: (context) => StoryScreen(initialIndex: hIndex),
+                    ),
                   );
                 },
               );

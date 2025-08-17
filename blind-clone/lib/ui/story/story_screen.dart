@@ -8,7 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class StoryScreen extends StatefulWidget {
-  const StoryScreen({super.key});
+  final int? initialIndex;
+
+  const StoryScreen({super.key, this.initialIndex});
 
   @override
   State<StoryScreen> createState() => _StoryScreenState();
@@ -25,6 +27,8 @@ class _StoryScreenState extends State<StoryScreen>
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.initialIndex ?? 0;
+
     _pageController = PageController();
     _animController = AnimationController(
       vsync: this,
@@ -122,11 +126,12 @@ class _StoryScreenState extends State<StoryScreen>
                     setState(() {
                       _currentIndex = index;
                     });
-                    _animController?.forward(from: 0);
+                    _startTimer(state.posts.length);
                   },
                   itemCount: posts.length,
                   itemBuilder: (context, index) {
-                    final post = posts[index];
+                    final post = posts[_currentIndex];
+
                     return Stack(
                       fit: StackFit.expand,
                       children: [
@@ -144,7 +149,7 @@ class _StoryScreenState extends State<StoryScreen>
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                posts[_currentIndex].title,
+                                post.title,
                                 style: const TextStyle(
                                   fontSize: 18,
                                   color: Colors.white,
