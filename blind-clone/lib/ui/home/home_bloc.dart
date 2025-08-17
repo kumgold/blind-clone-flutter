@@ -24,9 +24,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onFetchPosts(FetchPosts event, Emitter<HomeState> emit) async {
     try {
       final result = await _postRepository.getPosts();
-      emit(HomeResult(posts: result));
+      final posts = result.where((e) => e.channelName != '스토리').toList();
+      final stories = result.where((e) => e.channelName == '스토리').toList();
+
+      emit(HomeResult(posts: posts, stories: stories));
     } catch (e) {
-      emit(HomeResult(posts: []));
+      emit(HomeResult(posts: [], stories: []));
     }
   }
 }

@@ -14,11 +14,12 @@ class HomeLoading extends HomeState {}
 
 class HomeResult extends HomeState {
   final List<Post> posts;
+  final List<Post> stories;
 
-  const HomeResult({required this.posts});
+  const HomeResult({required this.posts, required this.stories});
 
   @override
-  List<Object> get props => [posts];
+  List<Object> get props => [posts, stories];
 }
 
 class HomeError extends HomeState {

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_state.dart';
@@ -101,34 +103,75 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView.builder(
                   itemCount: state.posts.length,
                   itemBuilder: (context, index) {
-                    final post = state.posts[index];
-                    return ListTile(
-                      title: Row(
-                        children: [
-                          Text(
-                            post.title,
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          ),
-                          Text(
-                            post.channelName,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.blueGrey,
+                    if (index == 3) {
+                      return SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.stories.length,
+                          itemBuilder: (context, hIndex) {
+                            final story = state.stories[hIndex];
+                            return Container(
+                              margin: const EdgeInsets.all(8),
+                              child: AspectRatio(
+                                aspectRatio: 9 / 16,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child:
+                                      (story.imageUrl != null &&
+                                          File(story.imageUrl!).existsSync())
+                                      ? Image.file(
+                                          File(story.imageUrl!),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(
+                                          color: Colors.grey.shade300,
+                                          child: const Center(
+                                            child: Icon(
+                                              Icons.image_not_supported,
+                                              color: Colors.black45,
+                                            ),
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      final post = state.posts[index];
+                      return ListTile(
+                        title: Row(
+                          children: [
+                            Text(
+                              post.title,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                      subtitle: Text(post.content),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                PostDetailScreen(postId: post.id),
-                          ),
-                        );
-                      },
-                    );
+                            Text(
+                              post.channelName,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.blueGrey,
+                              ),
+                            ),
+                          ],
+                        ),
+                        subtitle: Text(post.content),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PostDetailScreen(postId: post.id),
+                            ),
+                          );
+                        },
+                      );
+                    }
                   },
                 ),
               );
