@@ -48,11 +48,11 @@ class _StoryScreenState extends State<StoryScreen>
     _timer?.cancel();
     _animController?.forward(from: 0);
 
-    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) async {
       if (!mounted) return;
 
       int nextIndex = (_currentIndex + 1) % length;
-      _pageController.animateToPage(
+      await _pageController.animateToPage(
         nextIndex,
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
