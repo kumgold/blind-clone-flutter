@@ -130,3 +130,5 @@ blind-clone/firebase.json
 blind-clone/ios/Runner/GoogleService-Info.plist
 blind-clone/ios/Runner/GoogleService-Info.plist
 .idea/workspace.xml
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
