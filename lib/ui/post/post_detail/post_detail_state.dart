@@ -28,3 +28,5 @@ class PostDetailError extends PostDetailState {
   @override
   List<Object> get props => [message];
 }
+
+class PostDeleteSuccess extends PostDetailState {}

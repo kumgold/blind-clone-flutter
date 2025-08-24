@@ -60,6 +60,14 @@ class PostRepository {
     }
   }
 
+  Future<void> deletePost(String postId) async {
+    try {
+      await _postsRef.child(postId).remove();
+    } catch (e) {
+      throw Exception('Failed to delete post: $e');
+    }
+  }
+
   Future<String> _saveImage(File imageFile) async {
     final directory = await getApplicationDocumentsDirectory();
 

@@ -14,6 +14,7 @@ class PostDetailBloc extends Bloc<PostDetailEvent, PostDetailState> {
       super(PostDetailInitial()) {
     on<GetPostDetail>(_onGetPostDetail);
     on<UpdatePostDetail>(_onUpdatePostDetail);
+    on<DeletePost>(_onDeletePost);
   }
 
   Future<void> _onGetPostDetail(
@@ -36,5 +37,18 @@ class PostDetailBloc extends Bloc<PostDetailEvent, PostDetailState> {
     Emitter<PostDetailState> emit,
   ) {
     emit(PostDetailLoaded(event.post));
+  }
+
+  Future<void> _onDeletePost(
+    DeletePost event,
+    Emitter<PostDetailState> emit,
+  ) async {
+    try {
+      await _postRepository.deletePost(event.postId);
+
+      emit(PostDeleteSuccess());
+    } catch (e) {
+      emit(PostDetailError("삭제 중 오류가 발생했습니다: ${e.toString()}"));
+    }
   }
 }

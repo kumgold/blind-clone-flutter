@@ -56,7 +56,10 @@ class PostDetailView extends StatelessWidget {
                         );
                       }
                     } else if (value == 'delete') {
-                      // 삭제하기 버튼 클릭 시 로직 (추가 구현 필요)
+                      context.read<PostDetailBloc>().add(
+                        DeletePost(state.post.id),
+                      );
+                      Navigator.of(context).pop();
                     }
                   },
                   itemBuilder: (BuildContext context) =>
