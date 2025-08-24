@@ -1,16 +1,20 @@
-# blind_clone_flutter
+# Blind Clone
 
-A new Flutter project.
+## 📖 프로젝트 소개
 
-## Getting Started
+## 🛠 기술 스택
 
-This project is a starting point for a Flutter application.
+Framework : Flutter <br>
+Language : Dart <br>
 
-A few resources to get you started if this is your first Flutter project:
+## ✨ 주요 기능
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🏞️ 화면
+<p align="center">
+  <img src="./images/blind_clone_img_1.gif" width="24%">
+  <img src="./images/blind_clone_img_2.gif" width="24%">
+</p>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 👀 개발 과정에서 발생한 이슈
+
+## 🎯 개발 계획
