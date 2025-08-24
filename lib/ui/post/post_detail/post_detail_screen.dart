@@ -1,5 +1,8 @@
+import 'package:blind_clone_flutter/data/post.dart';
+import 'package:blind_clone_flutter/data/post_repository.dart';
+import 'package:blind_clone_flutter/ui/post/edit_post/edit_post_bloc.dart';
+import 'package:blind_clone_flutter/ui/post/edit_post/edit_post_screen.dart';
 import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_bloc.dart';
-import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_state.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +30,53 @@ class PostDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(onPressed: () {}, icon: Icon(Icons.more_vert))],
+        actions: [
+          BlocBuilder<PostDetailBloc, PostDetailState>(
+            builder: (context, state) {
+              if (state is PostDetailLoaded) {
+                return PopupMenuButton<String>(
+                  onSelected: (value) async {
+                    if (value == 'edit') {
+                      // 수정하기 버튼 클릭 시
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider<EditPostBloc>(
+                            create: (context) => EditPostBloc(
+                              postRepository: context.read<PostRepository>(),
+                            ),
+                            child: EditPostScreen(post: state.post),
+                          ),
+                        ),
+                      );
+
+                      if (result != null && result is Post && context.mounted) {
+                        context.read<PostDetailBloc>().add(
+                          UpdatePostDetail(result),
+                        );
+                      }
+                    } else if (value == 'delete') {
+                      // 삭제하기 버튼 클릭 시 로직 (추가 구현 필요)
+                    }
+                  },
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
+                        const PopupMenuItem<String>(
+                          value: 'edit',
+                          child: Text('수정하기'),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: 'delete',
+                          child: Text('삭제하기'),
+                        ),
+                      ],
+                );
+              }
+              // 로딩 중이거나 에러일 때는 더보기 버튼을 숨깁니다.
+              return const SizedBox.shrink();
+            },
+          ),
+        ],
       ),
       body: BlocBuilder<PostDetailBloc, PostDetailState>(
         builder: (context, state) {

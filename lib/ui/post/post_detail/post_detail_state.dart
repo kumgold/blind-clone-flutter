@@ -1,5 +1,4 @@
-import 'package:blind_clone_flutter/data/post.dart';
-import 'package:equatable/equatable.dart';
+part of 'post_detail_bloc.dart';
 
 abstract class PostDetailState extends Equatable {
   const PostDetailState();

@@ -1,23 +1,10 @@
+import 'package:blind_clone_flutter/data/post.dart';
 import 'package:blind_clone_flutter/data/post_repository.dart';
-import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class PostDetailEvent extends Equatable {
-  const PostDetailEvent();
-
-  @override
-  List<Object> get props => [];
-}
-
-class GetPostDetail extends PostDetailEvent {
-  final String postId;
-
-  const GetPostDetail(this.postId);
-
-  @override
-  List<Object> get props => [postId];
-}
+part 'post_detail_event.dart';
+part 'post_detail_state.dart';
 
 class PostDetailBloc extends Bloc<PostDetailEvent, PostDetailState> {
   final PostRepository _postRepository;
@@ -26,6 +13,7 @@ class PostDetailBloc extends Bloc<PostDetailEvent, PostDetailState> {
     : _postRepository = postRepository,
       super(PostDetailInitial()) {
     on<GetPostDetail>(_onGetPostDetail);
+    on<UpdatePostDetail>(_onUpdatePostDetail);
   }
 
   Future<void> _onGetPostDetail(
@@ -41,5 +29,12 @@ class PostDetailBloc extends Bloc<PostDetailEvent, PostDetailState> {
     } catch (e) {
       emit(PostDetailError(e.toString()));
     }
+  }
+
+  void _onUpdatePostDetail(
+    UpdatePostDetail event,
+    Emitter<PostDetailState> emit,
+  ) {
+    emit(PostDetailLoaded(event.post));
   }
 }
