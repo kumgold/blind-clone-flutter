@@ -36,10 +36,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final channels = Channel.channels;
 
     return Scaffold(
+      appBar: AppBar(title: const Text('게시글 작성')),
       body: BlocConsumer<AddPostBloc, AddPostState>(
         listener: (context, state) {
           if (state is AddPostSuccess) {
-            Navigator.pop(context); // 저장 성공 후 이전 화면으로 이동
+            Navigator.of(context).pop(true);
           } else if (state is AddPostError) {
             ScaffoldMessenger.of(
               context,

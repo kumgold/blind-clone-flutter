@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:blind_clone_flutter/data/post.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
-import 'package:blind_clone_flutter/ui/home/home_state.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_bloc.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_screen.dart';
 import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_screen.dart';
@@ -60,9 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ListTile(
                 leading: const Icon(Icons.photo_camera_outlined),
                 title: const Text('사진 게시물'),
-                onTap: () {
+                onTap: () async {
                   Navigator.pop(ctx);
-                  Navigator.push(
+                  final result = Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (_) => BlocProvider(
@@ -72,6 +71,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   );
+
+                  if (result == true && context.mounted) {
+                    context.read<HomeBloc>().add(FetchPosts());
+                  }
                 },
               ),
             ],
@@ -89,13 +92,9 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, state) {
             if (state is HomeInitial) {
               return Center();
-            }
-
-            if (state is HomeLoading) {
+            } else if (state is HomeLoading) {
               return Center(child: defaultProgressIndicator());
-            }
-
-            if (state is HomeResult) {
+            } else if (state is HomeResult) {
               if (state.posts.isEmpty) {
                 return const Center(child: Text('게시물이 없습니다.'));
               }
@@ -191,13 +190,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                onTap: () {
-                  Navigator.push(
+                onTap: () async {
+                  final result = Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => StoryScreen(initialIndex: hIndex),
                     ),
                   );
+
+                  if (result == true && context.mounted) {
+                    context.read<HomeBloc>().add(FetchPosts());
+                    ScaffoldMessenger.of(context)
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(
+                        const SnackBar(content: Text('게시글이 삭제되었습니다.')),
+                      );
+                  }
                 },
               );
             },

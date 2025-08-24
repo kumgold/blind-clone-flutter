@@ -59,7 +59,6 @@ class PostDetailView extends StatelessWidget {
                       context.read<PostDetailBloc>().add(
                         DeletePost(state.post.id),
                       );
-                      Navigator.of(context).pop();
                     }
                   },
                   itemBuilder: (BuildContext context) =>
@@ -86,6 +85,8 @@ class PostDetailView extends StatelessWidget {
           // 로딩 상태일 때
           if (state is PostDetailLoading) {
             return Center(child: defaultProgressIndicator());
+          } else if (state is PostDeleteSuccess) {
+            Navigator.of(context).pop(true);
           }
           // 데이터 로드 완료 상태일 때
           else if (state is PostDetailLoaded) {
