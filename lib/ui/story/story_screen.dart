@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:blind_clone_flutter/ui/story/story_bloc.dart';
-import 'package:blind_clone_flutter/ui/story/story_state.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

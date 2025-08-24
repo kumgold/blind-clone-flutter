@@ -1,7 +1,6 @@
 import 'package:blind_clone_flutter/share/channel.dart';
 import 'package:blind_clone_flutter/data/post.dart';
 import 'package:blind_clone_flutter/ui/post/add_post/add_post_bloc.dart';
-import 'package:blind_clone_flutter/ui/post/add_post/add_post_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -37,7 +36,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final channels = Channel.channels;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('게시글 작성')),
       body: BlocConsumer<AddPostBloc, AddPostState>(
         listener: (context, state) {
           if (state is AddPostSuccess) {

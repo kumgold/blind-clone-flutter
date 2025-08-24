@@ -1,5 +1,4 @@
-import 'package:blind_clone_flutter/data/post.dart';
-import 'package:equatable/equatable.dart';
+part of 'post_channel_bloc.dart';
 
 abstract class PostChannelState extends Equatable {
   const PostChannelState();

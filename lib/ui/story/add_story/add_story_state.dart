@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'add_story_bloc.dart';
 
 abstract class AddStoryState extends Equatable {
   const AddStoryState();

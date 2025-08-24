@@ -1,5 +1,4 @@
-import 'package:blind_clone_flutter/data/post.dart';
-import 'package:equatable/equatable.dart';
+part of 'story_bloc.dart';
 
 abstract class StoryState extends Equatable {
   const StoryState();

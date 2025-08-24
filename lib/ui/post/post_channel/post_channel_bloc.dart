@@ -1,23 +1,10 @@
+import 'package:blind_clone_flutter/data/post.dart';
 import 'package:blind_clone_flutter/data/post_repository.dart';
-import 'package:blind_clone_flutter/ui/post/post_channel/post_channel_state.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-abstract class PostChannelEvent extends Equatable {
-  const PostChannelEvent();
-
-  @override
-  List<Object> get props => [];
-}
-
-class FetchPosts extends PostChannelEvent {
-  final String channelName;
-
-  const FetchPosts(this.channelName);
-
-  @override
-  List<Object> get props => [channelName];
-}
+part 'post_channel_state.dart';
+part 'post_channel_event.dart';
 
 class PostChannelBloc extends Bloc<PostChannelEvent, PostChannelState> {
   final PostRepository _postRepository;

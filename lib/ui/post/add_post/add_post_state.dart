@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of 'add_post_bloc.dart';
 
 abstract class AddPostState extends Equatable {
   const AddPostState();

@@ -1,5 +1,4 @@
 import 'package:blind_clone_flutter/ui/post/post_channel/post_channel_bloc.dart';
-import 'package:blind_clone_flutter/ui/post/post_channel/post_channel_state.dart';
 import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_screen.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
