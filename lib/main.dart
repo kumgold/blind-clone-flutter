@@ -79,6 +79,7 @@ class _MainPageState extends State<MainPage> {
       // _selectedIndex에 따라 _widgetOptions 리스트에서 적절한 페이지를 선택하여 표시
       body: Center(child: _widgetOptions.elementAt(_selectedIndex)),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: '검색'),

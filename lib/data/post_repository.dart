@@ -14,28 +14,26 @@ class PostRepository {
       final snapshot = await _postsRef.orderByChild('createdAt').get();
       final data = snapshot.value as Map<dynamic, dynamic>?;
 
-      if (data == null) {
+      if (!snapshot.exists) {
         return [];
       }
 
-      final posts =
-          data.entries.map((entry) {
-            return Post.fromJson(
-              entry.key,
-              Map<String, dynamic>.from(entry.value),
-            );
-          }).toList();
+      final posts = snapshot.children.map((dataSnapshot) {
+        final postData = Map<String, dynamic>.from(dataSnapshot.value as Map);
+        return Post.fromJson(dataSnapshot.key!, postData);
+      }).toList();
+
+      final sortedPosts = posts.reversed.toList();
 
       if (channelName != null && channelName.isNotEmpty) {
-        final filteredPosts =
-            posts.where((post) {
-              return post.channelName == channelName;
-            }).toList();
+        final filteredPosts = sortedPosts.where((post) {
+          return post.channelName == channelName;
+        }).toList();
 
         return filteredPosts;
       }
 
-      return posts;
+      return sortedPosts;
     } catch (e) {
       throw Exception('Failed to load posts: $e');
     }

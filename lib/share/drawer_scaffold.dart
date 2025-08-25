@@ -29,9 +29,11 @@ class DrawerScaffold extends StatelessWidget {
           IconButton(onPressed: () => {}, icon: Icon(Icons.chat_rounded)),
           IconButton(onPressed: () => {}, icon: Icon(Icons.person)),
         ],
+        backgroundColor: Colors.grey[100],
       ),
       drawer: Drawer(
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        backgroundColor: Colors.grey[100],
         child: SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8),
@@ -52,9 +54,8 @@ class DrawerScaffold extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder:
-                                    (context) =>
-                                        PostChannelScreen(channelName: channel),
+                                builder: (context) =>
+                                    PostChannelScreen(channelName: channel),
                               ),
                             );
                           } else {
