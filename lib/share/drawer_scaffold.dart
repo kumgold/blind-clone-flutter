@@ -34,7 +34,7 @@ class DrawerScaffold extends StatelessWidget {
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
         child: SafeArea(
           child: Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 8),
+            padding: EdgeInsets.symmetric(horizontal: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -52,8 +52,9 @@ class DrawerScaffold extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    PostChannelScreen(channelName: channel),
+                                builder:
+                                    (context) =>
+                                        PostChannelScreen(channelName: channel),
                               ),
                             );
                           } else {
@@ -66,7 +67,7 @@ class DrawerScaffold extends StatelessWidget {
                           }
                         },
                         child: Padding(
-                          padding: EdgeInsetsGeometry.symmetric(vertical: 4),
+                          padding: EdgeInsets.symmetric(vertical: 4),
                           child: Row(
                             children: [
                               CircleAvatar(

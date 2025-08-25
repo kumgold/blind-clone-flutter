@@ -67,8 +67,10 @@ class _StoryScreenState extends State<StoryScreen>
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          StoryBloc(postRepository: context.read())..add(const FetchPosts()),
+      create:
+          (_) =>
+              StoryBloc(postRepository: context.read())
+                ..add(const FetchPosts()),
       child: BlocConsumer<StoryBloc, StoryState>(
         listener: (context, state) {
           if (state is StoryResult) {
@@ -142,7 +144,7 @@ class _StoryScreenState extends State<StoryScreen>
 
                         // 하단 텍스트 영역
                         Padding(
-                          padding: EdgeInsetsGeometry.all(16),
+                          padding: EdgeInsets.all(16),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.start,

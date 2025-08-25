@@ -25,6 +25,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         channelName: _selectedChannel!,
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),
+        createdAt: DateTime.now(),
       );
 
       context.read<AddPostBloc>().add(UpdatePost(post));

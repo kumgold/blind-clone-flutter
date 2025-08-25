@@ -4,12 +4,14 @@ class Post {
   final String title;
   final String content;
   final String? imageUrl;
+  final DateTime createdAt;
 
   const Post({
     required this.id,
     required this.channelName,
     required this.title,
     required this.content,
+    required this.createdAt,
     this.imageUrl,
   });
 
@@ -20,6 +22,10 @@ class Post {
       title: json['title'] ?? '제목 없음',
       content: json['content'] ?? '내용 없음',
       imageUrl: json['imageUrl'],
+      createdAt:
+          json['createdAt'] != null
+              ? DateTime.parse(json['createdAt'] as String)
+              : DateTime.now(),
     );
   }
 
@@ -30,8 +36,16 @@ class Post {
       'title': title,
       'content': content,
       'imageUrl': imageUrl,
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 
-  List<Object?> get props => [id, channelName, title, content, imageUrl];
+  List<Object?> get props => [
+    id,
+    channelName,
+    title,
+    content,
+    imageUrl,
+    createdAt,
+  ];
 }

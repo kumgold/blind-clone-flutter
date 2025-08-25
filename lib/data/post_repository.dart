@@ -11,21 +11,26 @@ class PostRepository {
 
   Future<List<Post>> getPosts({String? channelName}) async {
     try {
-      final snapshot = await _postsRef.get();
+      final snapshot = await _postsRef.orderByChild('createdAt').get();
       final data = snapshot.value as Map<dynamic, dynamic>?;
 
       if (data == null) {
         return [];
       }
 
-      final posts = data.entries.map((entry) {
-        return Post.fromJson(entry.key, Map<String, dynamic>.from(entry.value));
-      }).toList();
+      final posts =
+          data.entries.map((entry) {
+            return Post.fromJson(
+              entry.key,
+              Map<String, dynamic>.from(entry.value),
+            );
+          }).toList();
 
       if (channelName != null && channelName.isNotEmpty) {
-        final filteredPosts = posts.where((post) {
-          return post.channelName == channelName;
-        }).toList();
+        final filteredPosts =
+            posts.where((post) {
+              return post.channelName == channelName;
+            }).toList();
 
         return filteredPosts;
       }

@@ -37,6 +37,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
         channelName: _selectedChannel!,
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),
+        createdAt: DateTime.now(),
       );
 
       context.read<EditPostBloc>().add(SubmitPostChanges(post));
@@ -80,9 +81,11 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       labelText: '제목을 입력하세요',
                       border: OutlineInputBorder(),
                     ),
-                    validator: (value) => value == null || value.trim().isEmpty
-                        ? '제목을 입력하세요'
-                        : null,
+                    validator:
+                        (value) =>
+                            value == null || value.trim().isEmpty
+                                ? '제목을 입력하세요'
+                                : null,
                   ),
                   const SizedBox(height: 8),
                   DropdownButtonFormField<String>(
@@ -91,14 +94,15 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       border: OutlineInputBorder(),
                     ),
                     value: _selectedChannel,
-                    items: channels
-                        .map(
-                          (channel) => DropdownMenuItem(
-                            value: channel,
-                            child: Text(channel),
-                          ),
-                        )
-                        .toList(),
+                    items:
+                        channels
+                            .map(
+                              (channel) => DropdownMenuItem(
+                                value: channel,
+                                child: Text(channel),
+                              ),
+                            )
+                            .toList(),
                     onChanged: (value) {
                       setState(() {
                         _selectedChannel = value;
@@ -118,10 +122,11 @@ class _EditPostScreenState extends State<EditPostScreen> {
                       maxLines: null,
                       expands: true,
                       textAlignVertical: TextAlignVertical.top,
-                      validator: (value) =>
-                          value == null || value.trim().isEmpty
-                          ? '내용을 입력하세요'
-                          : null,
+                      validator:
+                          (value) =>
+                              value == null || value.trim().isEmpty
+                                  ? '내용을 입력하세요'
+                                  : null,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -134,9 +139,10 @@ class _EditPostScreenState extends State<EditPostScreen> {
                         ),
                       ),
                       onPressed: isLoading ? null : _submit,
-                      child: isLoading
-                          ? const CircularProgressIndicator()
-                          : const Text('수정 완료'),
+                      child:
+                          isLoading
+                              ? const CircularProgressIndicator()
+                              : const Text('수정 완료'),
                     ),
                   ),
                 ],

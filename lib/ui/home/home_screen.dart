@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:blind_clone_flutter/data/post.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
@@ -47,11 +48,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => BlocProvider(
-                        create: (_) =>
-                            AddPostBloc(postRepository: context.read()),
-                        child: const AddPostScreen(),
-                      ),
+                      builder:
+                          (_) => BlocProvider(
+                            create:
+                                (_) =>
+                                    AddPostBloc(postRepository: context.read()),
+                            child: const AddPostScreen(),
+                          ),
                     ),
                   );
                 },
@@ -64,11 +67,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   final result = Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => BlocProvider(
-                        create: (_) =>
-                            AddStoryBloc(postRepository: context.read()),
-                        child: const AddStoryScreen(),
-                      ),
+                      builder:
+                          (_) => BlocProvider(
+                            create:
+                                (_) => AddStoryBloc(
+                                  postRepository: context.read(),
+                                ),
+                            child: const AddStoryScreen(),
+                          ),
                     ),
                   );
 
@@ -98,19 +104,39 @@ class _HomeScreenState extends State<HomeScreen> {
               if (state.posts.isEmpty) {
                 return const Center(child: Text('게시물이 없습니다.'));
               }
+              final int splitIndex = min(3, state.posts.length);
+              final List<Post> postsBeforeStory = state.posts.sublist(
+                0,
+                splitIndex,
+              );
+              final List<Post> postsAfterStory = state.posts.sublist(
+                splitIndex,
+              );
+
               return RefreshIndicator(
                 onRefresh: _onRefresh,
-                child: ListView.builder(
-                  itemCount: state.posts.length,
-                  itemBuilder: (context, index) {
-                    if (index == 3) {
-                      return _storyWidget(state.stories);
-                    } else {
-                      final post = state.posts[index];
+                child: CustomScrollView(
+                  slivers: [
+                    // 2. 스토리 섹션 이전에 보여줄 게시물 목록 (최대 3개)
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final post = postsBeforeStory[index];
+                        return _postTile(post);
+                      }, childCount: postsBeforeStory.length),
+                    ),
 
-                      return _postTile(post);
-                    }
-                  },
+                    // 3. 스토리가 있을 경우, 중간에 스토리 섹션을 삽입
+                    if (state.stories.isNotEmpty)
+                      SliverToBoxAdapter(child: _storySection(state.stories)),
+
+                    // 4. 스토리 섹션 이후에 보여줄 나머지 게시물 목록
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final post = postsAfterStory[index];
+                        return _postTile(post);
+                      }, childCount: postsAfterStory.length),
+                    ),
+                  ],
                 ),
               );
             }
@@ -127,13 +153,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _storyWidget(List<Post> stories) {
+  Widget _storySection(List<Post> stories) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         InkWell(
           child: Padding(
-            padding: EdgeInsetsGeometry.symmetric(horizontal: 8),
+            padding: EdgeInsets.symmetric(horizontal: 8),
             child: Text('스토리 화면으로 이동', style: TextStyle(fontSize: 20)),
           ),
           onTap: () {
@@ -145,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SizedBox(height: 8),
         Padding(
-          padding: EdgeInsetsGeometry.symmetric(horizontal: 8),
+          padding: EdgeInsets.symmetric(horizontal: 8),
           child: Text('나만의 일상생활을 공유해보세요!', style: TextStyle(fontSize: 16)),
         ),
         SizedBox(
@@ -158,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
               return InkWell(
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
-                  padding: EdgeInsetsGeometry.all(8),
+                  padding: EdgeInsets.all(8),
                   child: Stack(
                     children: [
                       AspectRatio(
@@ -167,24 +193,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(12),
                           child:
                               (story.imageUrl != null &&
-                                  File(story.imageUrl!).existsSync())
-                              ? Image.file(
-                                  File(story.imageUrl!),
-                                  fit: BoxFit.cover,
-                                )
-                              : Container(
-                                  color: Colors.grey.shade300,
-                                  child: const Center(
-                                    child: Icon(
-                                      Icons.image_not_supported,
-                                      color: Colors.black45,
+                                      File(story.imageUrl!).existsSync())
+                                  ? Image.file(
+                                    File(story.imageUrl!),
+                                    fit: BoxFit.cover,
+                                  )
+                                  : Container(
+                                    color: Colors.grey.shade300,
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.image_not_supported,
+                                        color: Colors.black45,
+                                      ),
                                     ),
                                   ),
-                                ),
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsGeometry.all(8),
+                        padding: EdgeInsets.all(8),
                         child: Text(story.title),
                       ),
                     ],
