@@ -25,7 +25,7 @@ class _PostChannelScreenState extends State<PostChannelScreen> {
           PostChannelBloc(postRepository: context.read())
             ..add(FetchPosts(widget.channelName)),
       child: Scaffold(
-        backgroundColor: Colors.grey[100], // 배경색 변경
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text(
             widget.channelName,
