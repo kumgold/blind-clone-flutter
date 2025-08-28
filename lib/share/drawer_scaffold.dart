@@ -1,5 +1,6 @@
 import 'package:blind_clone_flutter/share/channel.dart';
 import 'package:blind_clone_flutter/ui/post/post_channel/post_channel_screen.dart';
+import 'package:blind_clone_flutter/ui/search/search_screen.dart';
 import 'package:blind_clone_flutter/ui/story/story_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,12 @@ class DrawerScaffold extends StatelessWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () => {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SearchScreen()),
+              );
+            },
             icon: const Icon(Icons.search, color: Colors.black87),
           ),
           IconButton(
