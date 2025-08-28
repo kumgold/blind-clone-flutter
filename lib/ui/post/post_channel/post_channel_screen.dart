@@ -1,5 +1,5 @@
 import 'package:blind_clone_flutter/ui/post/post_channel/post_channel_bloc.dart';
-import 'package:blind_clone_flutter/ui/post/post_detail/post_detail_screen.dart';
+import 'package:blind_clone_flutter/ui/widget/post.dart';
 import 'package:blind_clone_flutter/ui/widget/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +15,6 @@ class PostChannelScreen extends StatefulWidget {
 
 class _PostChannelScreenState extends State<PostChannelScreen> {
   Future<void> _onRefresh() async {
-    // 새로고침 시 FetchPost 이벤트를 다시 호출
     context.read<PostChannelBloc>().add(FetchPosts(widget.channelName));
   }
 
@@ -26,12 +25,25 @@ class _PostChannelScreenState extends State<PostChannelScreen> {
           PostChannelBloc(postRepository: context.read())
             ..add(FetchPosts(widget.channelName)),
       child: Scaffold(
-        appBar: AppBar(title: Text(widget.channelName)),
+        backgroundColor: Colors.grey[100], // 배경색 변경
+        appBar: AppBar(
+          title: Text(
+            widget.channelName,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0.5,
+          iconTheme: const IconThemeData(color: Colors.black87),
+        ),
         body: Center(
           child: BlocBuilder<PostChannelBloc, PostChannelState>(
             builder: (context, state) {
               if (state is PostChannelInitial) {
-                return Center();
+                return const Center();
               }
 
               if (state is PostChannelLoading) {
@@ -48,41 +60,12 @@ class _PostChannelScreenState extends State<PostChannelScreen> {
                     itemCount: state.posts.length,
                     itemBuilder: (context, index) {
                       final post = state.posts[index];
-                      return ListTile(
-                        title: Row(
-                          children: [
-                            Text(
-                              post.title,
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              post.channelName,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.blueGrey,
-                              ),
-                            ),
-                          ],
-                        ),
-                        subtitle: Text(post.content),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  PostDetailScreen(postId: post.id),
-                            ),
-                          );
-                        },
-                      );
+                      return PostTile(post: post);
                     },
                   ),
                 );
               }
-              return Text('');
+              return const Text('');
             },
           ),
         ),

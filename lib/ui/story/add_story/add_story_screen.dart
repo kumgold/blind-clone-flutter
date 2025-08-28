@@ -33,7 +33,9 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
     }
   }
 
-  void _submit() {
+  void _submit(bool isLoading) {
+    if (isLoading) return;
+
     if (_image == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -41,7 +43,7 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
           duration: Duration(seconds: 2),
         ),
       );
-      return; // 이미지가 없으면 제출 중단
+      return;
     }
 
     if (_formKey.currentState?.validate() ?? false) {
@@ -50,13 +52,6 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
           _titleController.text.trim(),
           _contentController.text.trim(),
           _image!,
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('제목과 내용을 모두 입력해주세요.'),
-          duration: Duration(seconds: 2),
         ),
       );
     }
@@ -72,106 +67,141 @@ class _AddStoryScreenState extends State<AddStoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('게시글 수정'),
+        backgroundColor: Colors.white,
+        elevation: 0.5,
+        title: const Text(
+          '스토리 만들기',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.close, color: Colors.black87),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.check),
-            onPressed: () {
-              _submit();
+          BlocBuilder<AddStoryBloc, AddStoryState>(
+            builder: (context, state) {
+              final isLoading = state is AddStoryLoading;
+              return TextButton(
+                onPressed: () => _submit(isLoading),
+                child: isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2.0),
+                      )
+                    : const Text(
+                        '등록',
+                        style: TextStyle(
+                          color: Color(0xFF2F55D2),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+              );
             },
           ),
         ],
       ),
-      body: BlocConsumer<AddStoryBloc, AddStoryState>(
+      body: BlocListener<AddStoryBloc, AddStoryState>(
         listener: (context, state) {
           if (state is AddStoryResult) {
-            Navigator.pop(context);
+            // 성공 시 true를 반환하여 홈 화면에서 새로고침 하도록 유도
+            Navigator.pop(context, true);
           } else if (state is AddStoryError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('오류: ${state.errorMessage}')),
             );
           }
         },
-        builder: (context, state) {
-          return SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    GestureDetector(
-                      onTap: _pickImage,
-                      child: Container(
-                        height: 300,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: _image != null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(11.0),
-                                child: Image.file(
-                                  _image!,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                ),
-                              )
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.add_a_photo_outlined,
-                                    size: 60,
-                                    color: Colors.grey.shade600,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    '탭하여 사진 추가',
-                                    style: TextStyle(
-                                      color: Colors.grey.shade700,
-                                    ),
-                                  ),
-                                ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 8.0,
+            ),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // 이미지 선택 영역
+                  GestureDetector(
+                    onTap: _pickImage,
+                    child: Container(
+                      height: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: _image != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(12.0),
+                              child: Image.file(
+                                _image!,
+                                fit: BoxFit.cover,
+                                width: double.infinity,
                               ),
-                      ),
+                            )
+                          : Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  size: 60,
+                                  color: Colors.grey.shade500,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '탭하여 사진 추가',
+                                  style: TextStyle(
+                                    color: Colors.grey.shade600,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
                     ),
-                    const SizedBox(height: 24.0),
+                  ),
+                  const SizedBox(height: 16.0),
+                  const Divider(height: 1, color: Colors.grey),
 
-                    // 제목 입력 필드
-                    TextField(
-                      controller: _titleController,
-                      decoration: const InputDecoration(
-                        labelText: '제목',
-                        hintText: '제목을 입력하세요',
-                        border: OutlineInputBorder(),
-                      ),
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  // 제목 입력 필드
+                  TextFormField(
+                    controller: _titleController,
+                    decoration: const InputDecoration(
+                      hintText: '제목',
+                      border: InputBorder.none,
                     ),
-                    const SizedBox(height: 16.0),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    validator: (value) => value == null || value.trim().isEmpty
+                        ? '제목을 입력하세요'
+                        : null,
+                  ),
+                  const Divider(height: 1, color: Colors.grey),
 
-                    // 내용 입력 필드
-                    TextField(
-                      controller: _contentController,
-                      decoration: const InputDecoration(
-                        labelText: '내용',
-                        hintText: '내용을 입력하세요',
-                        border: OutlineInputBorder(),
-                        alignLabelWithHint: true,
-                      ),
-                      maxLines: 8,
+                  // 내용 입력 필드
+                  TextFormField(
+                    controller: _contentController,
+                    decoration: const InputDecoration(
+                      hintText: '내용을 입력하세요',
+                      border: InputBorder.none,
                     ),
-                  ],
-                ),
+                    maxLines: 5,
+                  ),
+                ],
               ),
             ),
-          );
-        },
+          ),
+        ),
       ),
     );
   }
