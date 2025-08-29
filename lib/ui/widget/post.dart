@@ -37,6 +37,7 @@ class PostTile extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // 헤더
             Row(
               children: [
                 CircleAvatar(
@@ -51,13 +52,27 @@ class PostTile extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  post.channelName,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: Colors.blueGrey,
-                    fontWeight: FontWeight.w500,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      post.channelName,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      post.company,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -85,8 +100,8 @@ class PostTile extends StatelessWidget {
                       color: Colors.grey,
                     ),
                     const SizedBox(width: 4),
-                    const Text(
-                      "0",
+                    Text(
+                      post.likes.toString(),
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                     const SizedBox(width: 12),
@@ -96,8 +111,8 @@ class PostTile extends StatelessWidget {
                       color: Colors.grey,
                     ),
                     const SizedBox(width: 4),
-                    const Text(
-                      "0",
+                    Text(
+                      post.comments.toString(),
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                   ],

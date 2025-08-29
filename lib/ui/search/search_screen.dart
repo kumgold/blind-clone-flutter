@@ -11,17 +11,23 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   // 더미 데이터
   final List<String> _recentSearches = ['Flutter', '채용', '이직', '연봉'];
-  final List<String> _popularSearches = [
-    '삼성전자',
-    'SK하이닉스',
-    '성과급',
-    '네이버',
-    '카카오',
-    '현대자동차',
-    '재택근무',
-    '주식',
-    '육아휴직',
-    '쿠팡',
+
+  // 인기 채널 더미 데이터
+  final List<Map<String, dynamic>> _popularChannels = [
+    {'name': '자유게시판', 'icon': Icons.chat_bubble_outline},
+    {'name': 'IT라운지', 'icon': Icons.computer},
+    {'name': '부동산', 'icon': Icons.real_estate_agent},
+    {'name': '주식/코인', 'icon': Icons.candlestick_chart},
+    {'name': '여행/맛집', 'icon': Icons.card_travel},
+  ];
+
+  // 인기 회사 더미 데이터
+  final List<Map<String, dynamic>> _popularCompanies = [
+    {'name': '삼성전자', 'icon': Icons.business},
+    {'name': 'SK하이닉스', 'icon': Icons.business},
+    {'name': '네이버', 'icon': Icons.business},
+    {'name': '카카오', 'icon': Icons.business},
+    {'name': '현대자동차', 'icon': Icons.business},
   ];
 
   @override
@@ -46,20 +52,29 @@ class _SearchScreenState extends State<SearchScreen> {
         // 검색창
         title: TextField(
           controller: _searchController,
-          autofocus: true, // 페이지 진입 시 자동으로 포커스
           decoration: InputDecoration(
             hintText: '관심 있는 내용을 검색해보세요.',
             border: InputBorder.none,
             // 검색창 클리어 버튼
-            suffixIcon: IconButton(
-              icon: const Icon(Icons.cancel, color: Colors.grey, size: 20),
-              onPressed: () => _searchController.clear(),
-            ),
+            suffixIcon:
+                _searchController.text.isNotEmpty
+                    ? IconButton(
+                      icon: const Icon(
+                        Icons.cancel,
+                        color: Colors.grey,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        _searchController.clear();
+                        setState(() {});
+                      },
+                    )
+                    : null,
           ),
-          onSubmitted: (value) {
-            // 엔터 키를 눌렀을 때의 검색 로직
-            print('검색어: $value');
+          onChanged: (value) {
+            setState(() {});
           },
+          onSubmitted: (value) {},
         ),
       ),
       body: SingleChildScrollView(
@@ -71,61 +86,43 @@ class _SearchScreenState extends State<SearchScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Wrap(
-                spacing: 8.0, // 태그 간의 가로 간격
-                runSpacing: 8.0, // 태그 간의 세로 간격
-                children: _recentSearches.map((term) {
-                  return Chip(
-                    label: Text(term),
-                    onDeleted: () {
-                      setState(() {
-                        _recentSearches.remove(term);
-                      });
-                    },
-                    deleteIcon: const Icon(
-                      Icons.close,
-                      size: 16,
-                      color: Colors.grey,
-                    ),
-                    backgroundColor: Colors.grey.shade100,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                      side: BorderSide(color: Colors.grey.shade200),
-                    ),
-                  );
-                }).toList(),
+                spacing: 8.0,
+                runSpacing: 8.0,
+                children:
+                    _recentSearches.map((term) {
+                      return Chip(
+                        label: Text(term),
+                        onDeleted: () {
+                          setState(() {
+                            _recentSearches.remove(term);
+                          });
+                        },
+                        deleteIcon: const Icon(
+                          Icons.close,
+                          size: 16,
+                          color: Colors.grey,
+                        ),
+                        backgroundColor: Colors.grey.shade100,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                          side: BorderSide(color: Colors.grey.shade200),
+                        ),
+                      );
+                    }).toList(),
               ),
             ),
             const SizedBox(height: 16),
             const Divider(height: 8, thickness: 8, color: Color(0xFFF7F7F7)),
 
-            // 인기 검색어 섹션
-            _buildSectionHeader('인기 검색어', ''),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _popularSearches.length,
-              itemBuilder: (context, index) {
-                final term = _popularSearches[index];
-                return ListTile(
-                  leading: Text(
-                    '${index + 1}',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: index < 3
-                          ? const Color(0xFF2F55D2)
-                          : Colors.black87,
-                    ),
-                  ),
-                  title: Text(term),
-                  onTap: () {
-                    // 인기 검색어 클릭 시 검색 로직
-                    _searchController.text = term;
-                    print('검색어: $term');
-                  },
-                );
-              },
-            ),
+            // 인기 채널 섹션
+            _buildSectionHeader('인기 채널', ''),
+            _buildPopularList(_popularChannels, true),
+
+            const Divider(height: 8, thickness: 8, color: Color(0xFFF7F7F7)),
+
+            // 인기 회사 섹션
+            _buildSectionHeader('인기 회사', ''),
+            _buildPopularList(_popularCompanies, false),
           ],
         ),
       ),
@@ -144,12 +141,54 @@ class _SearchScreenState extends State<SearchScreen> {
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           if (actionText.isNotEmpty)
-            Text(
-              actionText,
-              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            GestureDetector(
+              onTap: () {
+                if (title == '최근 검색어') {
+                  setState(() {
+                    _recentSearches.clear();
+                  });
+                }
+              },
+              child: Text(
+                actionText,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
             ),
         ],
       ),
+    );
+  }
+
+  // 인기 채널 및 회사 리스트를 만드는 위젯
+  Widget _buildPopularList(List<Map<String, dynamic>> items, bool isChannel) {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: items.length,
+      itemBuilder: (context, index) {
+        final item = items[index];
+        return ListTile(
+          leading: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '${index + 1}',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: index < 3 ? const Color(0xFF2F55D2) : Colors.black87,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Icon(item['icon'], color: Colors.black54, size: 22),
+            ],
+          ),
+          title: Text(item['name']),
+          onTap: () {
+            _searchController.text = item['name'];
+          },
+        );
+      },
     );
   }
 }

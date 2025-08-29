@@ -38,6 +38,9 @@ class _EditPostScreenState extends State<EditPostScreen> {
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),
         createdAt: DateTime.now(),
+        company: '네이버',
+        likes: 3,
+        comments: 3,
       );
 
       context.read<EditPostBloc>().add(SubmitPostChanges(post));

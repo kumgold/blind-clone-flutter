@@ -29,6 +29,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
         title: _titleController.text.trim(),
         content: _contentController.text.trim(),
         createdAt: DateTime.now(),
+        company: '네이버',
+        likes: 3,
+        comments: 3,
       );
 
       context.read<AddPostBloc>().add(UpdatePost(post));
