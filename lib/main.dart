@@ -1,9 +1,9 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/share/drawer_scaffold.dart';
+import 'package:blind_clone_flutter/ui/company/company_bloc.dart';
+import 'package:blind_clone_flutter/ui/company/company_screen.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_screen.dart';
-import 'package:blind_clone_flutter/ui/search/search_bloc.dart';
-import 'package:blind_clone_flutter/ui/search/search_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// 탭의 상태를 관리하는 메인 페이지 (StatefulWidget)
+// 탭의 상태를 관리하는 메인 페이지
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -55,10 +55,10 @@ class _MainPageState extends State<MainPage> {
       child: const HomeScreen(),
     ),
     BlocProvider(
-      create: (context) => SearchBloc(postRepository: context.read()),
-      child: const SearchScreen(),
+      create: (context) => CompanyBloc(),
+      child: const CompanyScreen(),
     ),
-    PlaceholderPage(pageTitle: '검색'),
+    PlaceholderPage(pageTitle: '회사'),
     PlaceholderPage(pageTitle: '추가'),
     PlaceholderPage(pageTitle: '알림'),
     PlaceholderPage(pageTitle: '설정'),
@@ -82,7 +82,7 @@ class _MainPageState extends State<MainPage> {
         backgroundColor: Colors.white,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: '검색'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: '회사'),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_box_outlined),
             label: '추가',
