@@ -1,9 +1,12 @@
 import 'package:blind_clone_flutter/data/post_repository.dart';
 import 'package:blind_clone_flutter/share/drawer_scaffold.dart';
+import 'package:blind_clone_flutter/ui/channel/channel_screen.dart';
 import 'package:blind_clone_flutter/ui/company/company_bloc.dart';
 import 'package:blind_clone_flutter/ui/company/company_screen.dart';
 import 'package:blind_clone_flutter/ui/home/home_bloc.dart';
 import 'package:blind_clone_flutter/ui/home/home_screen.dart';
+import 'package:blind_clone_flutter/ui/notification/notification_screen.dart';
+import 'package:blind_clone_flutter/ui/recruit/recruit_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -45,7 +48,7 @@ class _MainPageState extends State<MainPage> {
   // 현재 선택된 탭의 인덱스를 저장할 변수
   int _selectedIndex = 0;
 
-  static final List<String> _titleList = ["홈", "검색", "추가", "알림", "설정"];
+  static final List<String> _titleList = ["홈", "검색", "채널", "채용", "알림"];
 
   // 각 탭에 해당하는 페이지 위젯들을 리스트로 정의
   static final List<Widget> _widgetOptions = <Widget>[
@@ -58,10 +61,9 @@ class _MainPageState extends State<MainPage> {
       create: (context) => CompanyBloc(),
       child: const CompanyScreen(),
     ),
-    PlaceholderPage(pageTitle: '회사'),
-    PlaceholderPage(pageTitle: '추가'),
-    PlaceholderPage(pageTitle: '알림'),
-    PlaceholderPage(pageTitle: '설정'),
+    const ChannelScreen(),
+    const RecruitScreen(),
+    const NotificationScreen(),
   ];
 
   // 탭이 선택되었을 때 호출될 함수
@@ -83,12 +85,12 @@ class _MainPageState extends State<MainPage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '홈'),
           BottomNavigationBarItem(icon: Icon(Icons.search), label: '회사'),
+          BottomNavigationBarItem(icon: Icon(Icons.wifi_channel), label: '채널'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add_box_outlined),
-            label: '추가',
+            icon: Icon(Icons.build_outlined),
+            label: '채용',
           ),
           BottomNavigationBarItem(icon: Icon(Icons.notifications), label: '알림'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: '설정'),
         ],
         currentIndex: _selectedIndex, // 현재 활성화된 탭 인덱스
         selectedItemColor: Colors.indigoAccent,
