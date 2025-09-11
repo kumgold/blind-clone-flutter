@@ -44,7 +44,7 @@ Firebase Realtime Database를 사용하여 Post(or Story) 데이터를 CRUD 할 
 
 ```mermaid
 flowchart TD
-    A[Firebase] --> B[Post(Story)]
+    A[Firebase] --> B[Post, Story]
     B --> C[Home Screen]
 
     D[Dummy Data] --> E[Other Screen]
