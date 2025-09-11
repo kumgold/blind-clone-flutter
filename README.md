@@ -37,4 +37,60 @@ etc : Firebase <br>
 
 스토리 화면을 클론 코딩 하면서 이미지를 클라우드에 저장해서 URL을 반환 받는 형식으로 만들고 싶었지만, 과금이 필요했기 때문에 내부 저장소 위치로 저장해서 구현하였습니다.
 
-## 🎯 개발 계획
+## :bar_chart 다이어그램
+```mermaid
+classDiagram
+    direction LR
+
+    class FirebaseService {
+      +fetchPosts(): Future<List<Post>>
+      +addPost(post: Post): Future<void>
+      +updatePost(post: Post): Future<void>
+      +deletePost(postId: String): Future<void>
+    }
+
+    class Post {
+      +id: String
+      +title: String
+      +content: String
+      +author: String
+      +timestamp: DateTime
+      +type: String  << "post" or "story" >>
+    }
+
+    class Story {
+      <<derived from Post>>
+    }
+
+    class DummyData {
+      +comments: List<Comment>
+      +users: List<User>
+      +notifications: List<Notification>
+    }
+
+    class Comment {
+      +id: String
+      +postId: String
+      +author: String
+      +content: String
+      +timestamp: DateTime
+    }
+
+    class User {
+      +id: String
+      +name: String
+      +avatarUrl: String
+    }
+
+    class Notification {
+      +id: String
+      +title: String
+      +message: String
+    }
+
+    FirebaseService --> Post
+    Post <|-- Story
+    DummyData --> Comment
+    DummyData --> User
+    DummyData --> Notification
+```
