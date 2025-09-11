@@ -43,6 +43,6 @@ flowchart TD
     A[Firebase] --> B[Fetch Post Data]
     B --> C[Home Screen]
 
-    D[Dummy Data] --> E[Company Chart Screen]
-    D --> F[Search Chart Screen]
+    D[Dummy Data] --> E[Company Screen]
+    D --> F[Other Screen]
 ```
