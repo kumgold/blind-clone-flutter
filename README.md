@@ -9,6 +9,7 @@
 Framework : Flutter <br>
 Language : Dart <br>
 상태 관리 : Bloc <br>
+DI : Provider <br>
 etc : Firebase <br>
 
 ## ✨ 주요 기능
