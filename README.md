@@ -2,8 +2,6 @@
 Blind Clone은 자주 사용하는 블라인드 커뮤니티 서비스를 클론 코딩한 프로젝트입니다. <br>
 Firebase Realtime Database를 활용하여 게시글, 스토리 CRUD 기능을 구현했으며, 일부 화면은 Dummy Data를 활용해 UI를 구성했습니다.
 
-<br><br>
-
 ## 📖 프로젝트 소개
 - 커뮤니티 서비스 구조 학습을 목적으로 블라인드를 클론 개발
 - Firebase Realtime Database를 통한 게시글 및 스토리 CRUD 구현
